@@ -2,12 +2,10 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "declaration": true,
     "strict": true,
+    "outDir": "./dist",
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noImplicitThis": true,
@@ -20,12 +18,17 @@
     "inlineSources": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "typeRoots": ["./node_modules/@types"],
+    "baseUrl": ".",
+    "paths": {
+      "bin/*": ["bin/*"],
+      "lib/*": ["lib/*"],
+      "lambda-fns/*": ["lambda-fns/*"],
+      "graphql/*": ["graphql/*"],
+      "types/*": ["types/*"],
+      "utils/*": ["utils/*"]
+    }
   },
-  "exclude": [
-    "node_modules",
-    "cdk.out"
-  ]
+  "include": ["**/*.ts", "lambda-fns/index.ts", "lambda-fns/createCourse.js"],
+  "exclude": ["node_modules", "cdk.out", "./dist/**/*"]
 }

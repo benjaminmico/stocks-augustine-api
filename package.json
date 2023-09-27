@@ -1,27 +1,41 @@
 {
-  "name": "code-is-love-backend",
+  "name": "code-backend",
   "version": "0.1.0",
   "bin": {
-    "code-is-love-backend": "bin/code-is-love-backend.js"
+    "code-backend": "bin/code-backend.js"
   },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "bootstrap": "cdk bootstrap",
+    "diff": "npm run build && npx cdk diff",
+    "deploy": "npm run build && npx cdk deploy -O ./cdk-exports.json",
+    "lint": "eslint '*/**/*.{js,ts}' --quiet --fix",
+    "prettier": "prettier --write .",
+    "generate-types": "graphql-codegen"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/typescript": "^4.0.1",
+    "@graphql-codegen/typescript-operations": "^4.0.1",
     "@types/jest": "^29.5.4",
     "@types/node": "20.5.9",
-    "jest": "^29.6.4",
-    "ts-jest": "^29.1.1",
+    "@types/uuid": "^9.0.4",
     "aws-cdk": "2.96.2",
+    "jest": "^29.6.4",
+    "prettier": "^3.0.3",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "~5.2.2"
   },
   "dependencies": {
     "aws-cdk-lib": "2.96.2",
+    "aws-sdk": "^2.1463.0",
     "constructs": "^10.0.0",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "uuid": "^9.0.1"
   }
 }

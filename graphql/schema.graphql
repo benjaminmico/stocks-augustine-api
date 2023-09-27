@@ -1,0 +1,127 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Query {
+  listCourses(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): CourseConnection @aws_api_key @aws_cognito_user_pools
+}
+
+input FilterInput {
+  attributeName: String!
+  attributeValue: String!
+}
+
+input SortInput {
+  attributeName: String!
+  direction: SortDirection!
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+type CourseConnection {
+  items: [Course!]!
+  nextToken: String
+}
+
+type Course @aws_api_key @aws_cognito_user_pools {
+  id: ID!
+  level: Level!
+  price: Price!
+  type: Type!
+  age: Int!
+  subjects: [String!]!
+  syllabus: [Syllabus!]!
+  time: String!
+  prerequisites: [String!]
+}
+
+enum Level {
+  Beginner
+  Intermediate
+  Advanced
+}
+
+enum Price {
+  Free
+  Paid
+}
+
+enum Type {
+  Career
+  Skill
+}
+
+type Syllabus {
+  title: String!
+  description: String!
+  module: Module!
+}
+
+type Module {
+  type: ModuleType!
+  content: String!
+}
+
+enum ModuleType {
+  Lesson
+  Quiz
+  Project
+}
+
+type Mutation {
+  createCourse(course: CourseInput!): Course
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  updateCourse(course: UpdateCourseInput!): Course
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  deleteCourse(id: ID!): ID @aws_cognito_user_pools(cognito_groups: ["Admin"])
+}
+
+input CourseInput {
+  level: Level!
+  price: Price!
+  type: Type!
+  age: Int!
+  subjects: [String!]!
+  syllabus: [SyllabusInput!]!
+  time: String!
+  prerequisites: [String!]
+}
+
+input UpdateCourseInput {
+  id: ID!
+  level: Level
+  price: Price
+  type: Type
+  age: Int
+  subjects: [String!]
+  syllabus: [SyllabusInput!]
+  time: String
+  prerequisites: [String!]
+}
+
+input SyllabusInput {
+  title: String!
+  description: String!
+  module: ModuleInput!
+}
+
+input ModuleInput {
+  type: ModuleType!
+  content: String!
+}
+
+type Subscription {
+  onCreateCourse: Course @aws_subscribe(mutations: ["createCourse"])
+  onUpdateCourse: Course @aws_subscribe(mutations: ["updateCourse"])
+  onDeleteCourse: ID @aws_subscribe(mutations: ["deleteCourse"])
+}
