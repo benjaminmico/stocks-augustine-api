@@ -17,7 +17,7 @@
     "cdk": "cdk",
     "bootstrap": "cdk bootstrap",
     "diff": "npm run build && npx cdk diff",
-    "deploy": "npm run build && npx cdk deploy -O ./cdk-exports.json",
+    "deploy": "npm run build && npx cdk deploy -O ./cdk-exports.json --require-approval never",
     "prettier": "prettier --write .",
     "generate-types": "graphql-codegen"
   },
