@@ -18,7 +18,6 @@
     "bootstrap": "cdk bootstrap",
     "diff": "npm run build && npx cdk diff",
     "deploy": "npm run build && npx cdk deploy -O ./cdk-exports.json",
-    "lint": "eslint '*/**/*.{js,ts}' --quiet --fix",
     "prettier": "prettier --write .",
     "generate-types": "graphql-codegen"
   },

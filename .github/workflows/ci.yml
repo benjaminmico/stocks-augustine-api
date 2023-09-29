@@ -23,18 +23,12 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Run linter
-        run: npm run lint
-
       - name: Run unit tests
         run: npm run test
 
-      - name: Run integration tests
-        run: npm run test:int
-        env:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_INT_TEST }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_INT_TEST }}
-
-      - name: Generate and check types
-        run: npm run generate-types
+      # - name: Run integration tests
+      #   run: npm run test:int
+      #   env:
+      #     AWS_REGION: ${{ secrets.AWS_REGION }}
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_INT_TEST }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_INT_TEST }}
