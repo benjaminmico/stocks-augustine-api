@@ -1,14 +1,28 @@
-# Welcome to your CDK TypeScript project
+# Code Backend
 
-This is a blank project for CDK development with TypeScript.
+This project is a Node.js backend built with AWS CDK and TypeScript, and it has been configured for deploying serverless applications. It provides a foundation for building scalable and maintainable applications, with a focus on testability and development workflow.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Features
 
-## Useful commands
+- AWS CDK for Infrastructure as Code
+- TypeScript for static typing
+- Jest for testing
+- GraphQL Codegen for generating TypeScript types from GraphQL schema
+- ESLint and Prettier for code formatting and linting
+- Commitlint for enforcing conventional commit messages
+- Husky for managing git hooks
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+## Prerequisites
+
+- Node.js 18.x
+- AWS CLI
+- AWS CDK CLI
+- Docker for running integration tests with local resources
+
+## Setup
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-username/code-backend.git
+   cd code-backend
+   ```
