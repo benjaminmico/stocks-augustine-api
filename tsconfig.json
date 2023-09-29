@@ -23,6 +23,7 @@
     "paths": {
       "bin/*": ["bin/*"],
       "lib/*": ["lib/*"],
+      "config/*": ["config/*"],
       "lambda-fns/*": ["lambda-fns/*"],
       "graphql/*": ["graphql/*"],
       "types/*": ["types/*"],
