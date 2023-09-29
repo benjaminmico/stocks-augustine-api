@@ -1,9 +1,11 @@
 name: Deploy to Dev
 
 on:
-  push:
-    branches:
-      - dev
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Manual deployment to dev'
+        required: false
 
 jobs:
   deploy:
