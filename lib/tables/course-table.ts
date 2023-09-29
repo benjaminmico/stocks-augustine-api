@@ -2,9 +2,8 @@
 
 import { Stack } from 'aws-cdk-lib';
 import * as ddb from 'aws-cdk-lib/aws-dynamodb';
-import { Construct } from 'constructs';
 
-export const courseTable = (scope: Stack) =>
+export const courseTable = (scope: Stack): ddb.Table =>
   new ddb.Table(scope, 'CDKCourseTable', {
     billingMode: ddb.BillingMode.PAY_PER_REQUEST,
     partitionKey: {
