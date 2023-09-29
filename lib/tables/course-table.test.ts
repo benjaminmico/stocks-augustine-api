@@ -24,7 +24,7 @@ describe('Course Table', () => {
 
     expect(ddb.Table).toHaveBeenCalledWith(
       stack,
-      'CDKCourseTable',
+      'CourseTable',
       expect.objectContaining({
         billingMode: ddb.BillingMode.PAY_PER_REQUEST,
         partitionKey: {

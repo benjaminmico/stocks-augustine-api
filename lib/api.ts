@@ -3,8 +3,8 @@ import * as cognito from 'aws-cdk-lib/aws-cognito';
 import { Construct } from 'constructs';
 
 export const createApi = (scope: Construct, userPool: cognito.UserPool) => {
-  const api = new appsync.GraphqlApi(scope, 'cdk-code-app', {
-    name: 'cdk-code-api',
+  const api = new appsync.GraphqlApi(scope, 'cdk-wondercode-app', {
+    name: 'cdk-wondercode-api',
     logConfig: {
       fieldLogLevel: appsync.FieldLogLevel.ALL,
     },

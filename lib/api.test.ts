@@ -17,7 +17,7 @@ describe('AppSync API Tests', () => {
     const resources = assertTemplate.findResources('AWS::AppSync::GraphQLApi');
 
     expect(resources).toEqual({
-      cdkcodeapp43A2FCCB: {
+      cdkwondercodeappD3D62F11: {
         Properties: {
           AdditionalAuthenticationProviders: [
             {
@@ -31,11 +31,11 @@ describe('AppSync API Tests', () => {
           AuthenticationType: 'API_KEY',
           LogConfig: {
             CloudWatchLogsRoleArn: {
-              'Fn::GetAtt': ['cdkcodeappApiLogsRole6CBA569F', 'Arn'],
+              'Fn::GetAtt': ['cdkwondercodeappApiLogsRole5170A48C', 'Arn'],
             },
             FieldLogLevel: 'ALL',
           },
-          Name: 'cdk-code-api',
+          Name: 'cdk-wondercode-api',
         },
         Type: 'AWS::AppSync::GraphQLApi',
       },

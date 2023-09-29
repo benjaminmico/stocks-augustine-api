@@ -21,8 +21,9 @@ describe('createCourse', () => {
 
   it('should call DocumentClient put method with correct params', async () => {
     const course = { name: 'Test Course' } as unknown as Course;
+    process.env.COURSE_TABLE = 'TestCourseTable';
     const expectedParams = {
-      TableName: 'TestCourseTable',
+      TableName: process.env.COURSE_TABLE,
       Item: expect.objectContaining(course),
     };
 

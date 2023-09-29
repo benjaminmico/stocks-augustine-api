@@ -20,13 +20,6 @@ module.exports = {
       lines: 100,
     },
   },
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/',
-    '/index.ts$',
-  ],
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/'
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/', '/index.ts$'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
 };

@@ -4,4 +4,4 @@ import 'source-map-support/register';
 import { CodeStack } from '../lib';
 
 const app = new App();
-new CodeStack(app, 'CodeStack');
+new CodeStack(app, 'Wondercode-CodeStack');

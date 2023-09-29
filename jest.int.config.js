@@ -4,7 +4,7 @@ const { compilerOptions } = require('./tsconfig');
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testMatch: ["**/*.int.ts"],
+  testMatch: ['**/*.int.ts'],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/',
   }),
@@ -15,13 +15,6 @@ module.exports = {
     '!**/node_modules/**',
     '!**/dist/**',
   ],
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/',
-    '/index.ts$',
-  ],
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/'
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/', '/index.ts$'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
 };
