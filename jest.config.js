@@ -13,7 +13,13 @@ module.exports = {
     'utils/**/*.ts',
     '!**/node_modules/**',
     '!**/dist/**',
+    '!**/*.int.ts',
   ],
+  coverageThreshold: {
+    global: {
+      lines: 100,
+    },
+  },
   coveragePathIgnorePatterns: [
     '/node_modules/',
     '/dist/',

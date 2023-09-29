@@ -4,10 +4,14 @@
   "bin": {
     "code-backend": "bin/code-backend.js"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest --config jest.config.js",
+    "test-coverage": "jest --config jest.config.js --coverage",
     "test:int": "LOCAL=true jest --config jest.int.config.js",
     "pretest:int": "docker-compose up -d dynamodb-local",
     "cdk": "cdk",
