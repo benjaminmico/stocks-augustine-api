@@ -1,13 +1,13 @@
-enum LogLevel {
+export enum LogLevel {
   INFO = 'INFO',
   WARN = 'WARN',
   ERROR = 'ERROR',
   DEBUG = 'DEBUG',
 }
 
-interface Logger {
+export interface Logger {
   level?: LogLevel;
-  message: string;
+  message: Error | string;
   error?: unknown;
   [key: string]: unknown;
 }
@@ -28,12 +28,14 @@ export const logError = ({
   message,
   ...rest
 }: Logger) => {
+  const errorString = message instanceof Error ? message.toString() : message;
+
   // eslint-disable-next-line no-console
   console.log(
     JSON.stringify({
       timestamp: new Date().toISOString(),
       level,
-      message,
+      message: errorString,
       ...rest,
     }),
   );
