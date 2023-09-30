@@ -4,8 +4,7 @@ import { Course } from 'types/graphql-types';
 import { log, logError } from 'utils/logger';
 import { v4 as uuid } from 'uuid';
 
-const env = process.env.NODE_ENV || 'LOCAL';
-const config = getDynamoConfig(env);
+const env = process.env.NODE_ENV;
 
 const docClient = new DynamoDB.DocumentClient({
   ...getDynamoConfig(env),
