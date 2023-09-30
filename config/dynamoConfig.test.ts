@@ -26,6 +26,6 @@ describe('DynamoDB Configurations', () => {
 
   test('should return empty configuration for unknown environment input', () => {
     const config = getDynamoConfig('UNKNOWN');
-    expect(config).toEqual({});
+    expect(config).toEqual(undefined);
   });
 });
