@@ -9,6 +9,7 @@ const dynamoDB = new AWS.DynamoDB({
 
 describe('createCourse Integration Test', () => {
   const testTableName = 'TestCourseTable';
+  process.env.AWS_ENV = 'LOCAL';
 
   beforeAll(async () => {
     // Create the table

@@ -12,7 +12,7 @@
     "watch": "tsc -w",
     "test": "jest --config jest.config.js",
     "test-coverage": "jest --config jest.config.js --coverage",
-    "test:int": "LOCAL=true jest --config jest.int.config.js",
+    "test:int": "jest --config jest.int.config.js",
     "pretest:int": "docker-compose up -d dynamodb-local",
     "cdk": "cdk",
     "bootstrap": "cdk bootstrap",

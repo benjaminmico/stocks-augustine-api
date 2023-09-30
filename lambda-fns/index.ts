@@ -18,7 +18,6 @@ type AppSyncEvent = {
 };
 
 export const course = async (event: AppSyncEvent) => {
-  console.log('course function');
   switch (event.info.fieldName) {
     case 'createCourse':
       return await createCourse(event.arguments.course);
