@@ -26,5 +26,5 @@ const configMap: Record<string, DynamoDBConfigurationsOptions> = {
 };
 
 export const getDynamoConfig = (env: string): DynamoDBConfigurationsOptions => {
-  return configMap[env] || LOCAL;
+  return configMap[env] || {};
 };

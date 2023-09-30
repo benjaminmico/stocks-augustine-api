@@ -24,11 +24,8 @@ describe('DynamoDB Configurations', () => {
     expect(config).toEqual({});
   });
 
-  test('should return LOCAL configuration for unknown environment input', () => {
+  test('should return empty configuration for unknown environment input', () => {
     const config = getDynamoConfig('UNKNOWN');
-    expect(config).toEqual({
-      region: 'local',
-      endpoint: 'http://localhost:8000',
-    });
+    expect(config).toEqual({});
   });
 });
