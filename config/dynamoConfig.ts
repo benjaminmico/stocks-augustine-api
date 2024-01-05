@@ -25,6 +25,8 @@ const configMap: Record<string, DynamoDBConfigurationsOptions> = {
   PRD,
 };
 
-export const getDynamoConfig = (env: string): DynamoDBConfigurationsOptions => {
-  return configMap[env] || LOCAL;
+export const getDynamoConfig = (
+  env?: string,
+): DynamoDBConfigurationsOptions => {
+  return env ? configMap[env] : {};
 };

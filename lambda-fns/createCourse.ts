@@ -4,23 +4,22 @@ import { Course } from 'types/graphql-types';
 import { log, logError } from 'utils/logger';
 import { v4 as uuid } from 'uuid';
 
-const env = process.env.NODE_ENV || 'LOCAL';
-const config = getDynamoConfig(env);
-
-const docClient = new DynamoDB.DocumentClient({
-  ...getDynamoConfig(env),
-  params: {
-    TableName: process.env.COURSE_TABLE as string,
-  },
-});
-
 const createCourse = async (course: Course) => {
+  const env = process.env.AWS_ENV;
+
+  const docClient = new DynamoDB.DocumentClient({
+    ...getDynamoConfig(env),
+    params: {
+      TableName: 'TestCourseTable' as string,
+    },
+  });
+
   if (!course.id) {
     course.id = uuid();
   }
 
   const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
-    TableName: process.env.COURSE_TABLE as string,
+    TableName: 'TestCourseTable' as string,
     Item: course,
   };
   try {

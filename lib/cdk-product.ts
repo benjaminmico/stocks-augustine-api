@@ -8,14 +8,14 @@ import { courseTable } from './tables/course-table';
 import { Duration, Stack } from 'aws-cdk-lib';
 import path = require('path');
 
-const createCourseCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
+const createProductCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
   const courseDdbTable = courseTable(scope);
 
   const courseLambda = new lambdaNodeJs.NodejsFunction(
     scope,
-    'AppSyncCourseHandler',
+    'AppSyncProductHandler',
     {
-      functionName: `code-dev-AppSyncCourseHandler`,
+      functionName: `code-dev-AppSyncProductHandler`,
       runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'index.course',
       entry: path.join(__dirname, `../lambda-fns/index.ts`),
@@ -33,10 +33,10 @@ const createCourseCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
     const courseGraphQLResolver = {
       api,
       lambdaFunction: courseLambda,
-      baseResolverProps: { typeName: 'Mutation', fieldName: 'createCourse' },
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'createProduct' },
     };
     graphqlResolver.createGraphqlResolver(courseGraphQLResolver);
   }
 };
 
-export default createCourseCDK;
+export default createProductCDK;

@@ -93,12 +93,12 @@ type Subscription {
   onDeleteCourse: ID @aws_subscribe(mutations: ["deleteCourse"])
 }
 
-type CourseConnection {
+type CourseConnection @aws_cognito_user_pools {
   items: [Course!]!
   nextToken: String
 }
 
-type Course @aws_api_key @aws_cognito_user_pools {
+type Course @aws_cognito_user_pools {
   id: ID!
   level: Level!
   price: Price!
@@ -110,34 +110,34 @@ type Course @aws_api_key @aws_cognito_user_pools {
   prerequisites: [String!]
 }
 
-enum Level {
+enum Level @aws_cognito_user_pools {
   Beginner
   Intermediate
   Advanced
 }
 
-enum Price {
+enum Price @aws_cognito_user_pools {
   Free
   Paid
 }
 
-enum Type {
+enum Type @aws_cognito_user_pools {
   Career
   Skill
 }
 
-type Syllabus {
+type Syllabus @aws_cognito_user_pools {
   title: String!
   description: String!
   module: Module!
 }
 
-type Module {
+type Module @aws_cognito_user_pools {
   type: ModuleType!
   content: String!
 }
 
-enum ModuleType {
+enum ModuleType @aws_cognito_user_pools {
   Lesson
   Quiz
   Project
@@ -158,7 +158,7 @@ enum SortDirection {
   DESC
 }
 
-input CourseInput {
+input CourseInput @aws_cognito_user_pools {
   level: Level!
   price: Price!
   type: Type!
@@ -169,7 +169,7 @@ input CourseInput {
   prerequisites: [String!]
 }
 
-input UpdateCourseInput {
+input UpdateCourseInput @aws_cognito_user_pools {
   id: ID!
   level: Level
   price: Price
@@ -206,7 +206,7 @@ input SyllabusInput {
   module: ModuleInput!
 }
 
-input ModuleInput {
+input ModuleInput @aws_cognito_user_pools {
   type: ModuleType!
   content: String!
 }

@@ -1,5 +1,6 @@
-import { Course } from 'types/graphql-types';
+import { Course, Product } from 'types/graphql-types';
 import createCourse from './createCourse';
+import createProduct from './createProduct';
 
 type AppSyncEvent = {
   info: {
@@ -7,6 +8,7 @@ type AppSyncEvent = {
   };
   arguments: {
     course: Course;
+    product: Product;
     test: any;
   };
   identity: {
@@ -18,10 +20,18 @@ type AppSyncEvent = {
 };
 
 export const course = async (event: AppSyncEvent) => {
-  console.log('course function');
   switch (event.info.fieldName) {
     case 'createCourse':
       return await createCourse(event.arguments.course);
+    default:
+      return null;
+  }
+};
+
+export const product = async (event: AppSyncEvent) => {
+  switch (event.info.fieldName) {
+    case 'createProduct':
+      return await createProduct(event.arguments.product);
     default:
       return null;
   }
