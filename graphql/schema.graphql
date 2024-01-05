@@ -11,21 +11,86 @@ type Query {
     limit: Int
     nextToken: String
   ): CourseConnection @aws_api_key @aws_cognito_user_pools
+  listProducts(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [Product] @aws_api_key @aws_cognito_user_pools
+  listSuppliers(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [Supplier] @aws_api_key @aws_cognito_user_pools
+  listStocks(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [Stock] @aws_api_key @aws_cognito_user_pools
+  listOrders(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [Order] @aws_api_key @aws_cognito_user_pools
+  listCategories(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [Category] @aws_api_key @aws_cognito_user_pools
+  listSubcategories(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [Subcategory] @aws_api_key @aws_cognito_user_pools
+  listMenus(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [Menu] @aws_api_key @aws_cognito_user_pools
+  listMenuItems(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [MenuItem] @aws_api_key @aws_cognito_user_pools
+  listSales(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [Sale] @aws_api_key @aws_cognito_user_pools
+  listSalesAnalysis(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [SalesAnalysis] @aws_api_key @aws_cognito_user_pools
 }
 
-input FilterInput {
-  attributeName: String!
-  attributeValue: String!
+type Mutation {
+  createCourse(course: CourseInput!): Course
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  updateCourse(course: UpdateCourseInput!): Course
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  deleteCourse(id: ID!): ID @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  createProduct(product: ProductInput!): Product
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  updateProduct(product: UpdateProductInput!): Product
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  deleteProduct(productId: ID!): ID
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
 }
 
-input SortInput {
-  attributeName: String!
-  direction: SortDirection!
-}
-
-enum SortDirection {
-  ASC
-  DESC
+type Subscription {
+  onCreateCourse: Course @aws_subscribe(mutations: ["createCourse"])
+  onUpdateCourse: Course @aws_subscribe(mutations: ["updateCourse"])
+  onDeleteCourse: ID @aws_subscribe(mutations: ["deleteCourse"])
 }
 
 type CourseConnection {
@@ -78,12 +143,19 @@ enum ModuleType {
   Project
 }
 
-type Mutation {
-  createCourse(course: CourseInput!): Course
-    @aws_cognito_user_pools(cognito_groups: ["Admin"])
-  updateCourse(course: UpdateCourseInput!): Course
-    @aws_cognito_user_pools(cognito_groups: ["Admin"])
-  deleteCourse(id: ID!): ID @aws_cognito_user_pools(cognito_groups: ["Admin"])
+input FilterInput {
+  attributeName: String!
+  attributeValue: String!
+}
+
+input SortInput {
+  attributeName: String!
+  direction: SortDirection!
+}
+
+enum SortDirection {
+  ASC
+  DESC
 }
 
 input CourseInput {
@@ -109,6 +181,25 @@ input UpdateCourseInput {
   prerequisites: [String!]
 }
 
+input ProductInput {
+  name: String!
+  unit: Float!
+  saleFormat: SaleFormat!
+  price: Float!
+  unitOfMeasure: UnitOfMeasure!
+  supplierId: ID
+}
+
+input UpdateProductInput {
+  productId: ID!
+  name: String!
+  unit: Float!
+  saleFormat: SaleFormat!
+  price: Float!
+  unitOfMeasure: UnitOfMeasure!
+  supplierId: ID
+}
+
 input SyllabusInput {
   title: String!
   description: String!
@@ -120,8 +211,96 @@ input ModuleInput {
   content: String!
 }
 
-type Subscription {
-  onCreateCourse: Course @aws_subscribe(mutations: ["createCourse"])
-  onUpdateCourse: Course @aws_subscribe(mutations: ["updateCourse"])
-  onDeleteCourse: ID @aws_subscribe(mutations: ["deleteCourse"])
+type Product @aws_api_key @aws_cognito_user_pools {
+  productId: ID!
+  name: String!
+  packageWeight: Float
+  saleFormat: SaleFormat
+  price: Float
+  supplierId: ID!
+  unitOfMeasure: UnitOfMeasure
+  supplier: Supplier
+}
+
+type Supplier @aws_api_key @aws_cognito_user_pools {
+  supplierId: ID!
+  name: String!
+}
+
+type Stock @aws_api_key @aws_cognito_user_pools {
+  stockId: ID!
+  productId: ID!
+  availableQuantity: Int
+  alertThreshold: Int
+  lastUpdateDate: String
+  product: Product
+}
+
+type Order @aws_api_key @aws_cognito_user_pools {
+  orderId: ID!
+  productId: ID!
+  orderedQuantity: Int
+  orderDate: String
+  deliveryDate: String
+  product: Product
+}
+
+type Category @aws_api_key @aws_cognito_user_pools {
+  categoryId: ID!
+  name: String!
+}
+
+type Subcategory @aws_api_key @aws_cognito_user_pools {
+  subcategoryId: ID!
+  name: String!
+  categoryId: ID!
+  category: Category
+}
+
+type Menu @aws_api_key @aws_cognito_user_pools {
+  menuId: ID!
+  categoryId: ID!
+  name: String!
+  description: String
+  price: Float
+  category: Category
+}
+
+type MenuItem @aws_api_key @aws_cognito_user_pools {
+  menuItemId: ID!
+  productId: ID!
+  menuId: ID!
+  usedQuantity: Float
+  unitOfMeasure: UnitOfMeasure
+  product: Product
+  menu: Menu
+}
+
+type Sale @aws_api_key @aws_cognito_user_pools {
+  saleId: ID!
+  menuId: ID!
+  quantitySold: Int
+  saleDate: String
+  menu: Menu
+}
+
+type SalesAnalysis @aws_api_key @aws_cognito_user_pools {
+  analysisId: ID!
+  saleId: ID!
+  margin: Float
+  lossPercentage: Float
+  salePrice: Float
+  saleTrend: String
+  sale: Sale
+}
+
+enum UnitOfMeasure {
+  Unit
+  Liter
+  Kilogram
+}
+
+enum SaleFormat {
+  Individual
+  Package
 }
