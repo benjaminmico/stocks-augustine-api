@@ -1,41 +1,41 @@
-// lib/course-table.ts
+// lib/product-table.ts
 
 import * as appsync from 'aws-cdk-lib/aws-appsync';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambdaNodeJs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as graphqlResolver from './graphql-resolver';
-import { courseTable } from './tables/course-table';
+import { productTable } from './tables/product-table';
 import { Duration, Stack } from 'aws-cdk-lib';
 import path = require('path');
 
 const createProductCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
-  const courseDdbTable = courseTable(scope);
+  const productDdbTable = productTable(scope);
 
-  const courseLambda = new lambdaNodeJs.NodejsFunction(
+  const productLambda = new lambdaNodeJs.NodejsFunction(
     scope,
     'AppSyncProductHandler',
     {
       functionName: `code-dev-AppSyncProductHandler`,
       runtime: lambda.Runtime.NODEJS_18_X,
-      handler: 'index.course',
+      handler: 'index.product',
       entry: path.join(__dirname, `../lambda-fns/index.ts`),
       timeout: Duration.seconds(30),
       memorySize: 1024,
       environment: {
-        COURSE_TABLE: courseDdbTable.tableName,
+        COURSE_TABLE: productDdbTable.tableName,
       },
     },
   );
-  courseDdbTable.grantReadWriteData(courseLambda);
+  productDdbTable.grantReadWriteData(productLambda);
 
   // Create Mutation
   if (api) {
-    const courseGraphQLResolver = {
+    const productGraphQLResolver = {
       api,
-      lambdaFunction: courseLambda,
+      lambdaFunction: productLambda,
       baseResolverProps: { typeName: 'Mutation', fieldName: 'createProduct' },
     };
-    graphqlResolver.createGraphqlResolver(courseGraphQLResolver);
+    graphqlResolver.createGraphqlResolver(productGraphQLResolver);
   }
 };
 
