@@ -35,7 +35,6 @@ const createCourseCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
     );
 
     graphqlResolver.createGraphqlResolver({
-      api,
       lambdaDataSource,
       baseResolverProps: { typeName: 'Mutation', fieldName: 'createCourse' },
     });
