@@ -10,7 +10,7 @@ const createProduct = async (productInput: ProductInput) => {
   const docClient = new DynamoDB.DocumentClient({
     ...getDynamoConfig(env),
     params: {
-      TableName: process.env.PRODUCT_TABLE as string,
+      TableName: 'PRODUCT_TABLE',
     },
   });
   const productId = uuid();
@@ -20,7 +20,7 @@ const createProduct = async (productInput: ProductInput) => {
   };
 
   const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
-    TableName: process.env.PRODUCT_TABLE as string,
+    TableName: 'PRODUCT_TABLE',
     Item: product,
   };
 
