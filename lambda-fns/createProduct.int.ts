@@ -7,9 +7,11 @@ const dynamoDB = new AWS.DynamoDB({
   endpoint: 'http://localhost:8000',
 });
 
-describe('createProduct Integration Test', () => {
-  const testTableName = 'TestProductTable';
+const testTableName = 'PRODUCT_TABLE';
+process.env.AWS_ENV = 'LOCAL';
+process.env.PRODUCT_TABLE = testTableName;
 
+describe('createProduct Integration Test', () => {
   beforeAll(async () => {
     await dynamoDB
       .createTable({
@@ -39,8 +41,6 @@ describe('createProduct Integration Test', () => {
   });
 
   it('should create a product in DynamoDB', async () => {
-    process.env.PRODUCT_TABLE = testTableName;
-
     const productInput: ProductInput = {
       name: 'Test Product',
       unit: 100,

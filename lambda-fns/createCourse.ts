@@ -10,7 +10,7 @@ const createCourse = async (course: Course) => {
   const docClient = new DynamoDB.DocumentClient({
     ...getDynamoConfig(env),
     params: {
-      TableName: 'TestCourseTable' as string,
+      TableName: process.env.COURSE_TABLE as string,
     },
   });
 
@@ -19,7 +19,7 @@ const createCourse = async (course: Course) => {
   }
 
   const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
-    TableName: 'TestCourseTable' as string,
+    TableName: process.env.COURSE_TABLE as string,
     Item: course,
   };
   try {

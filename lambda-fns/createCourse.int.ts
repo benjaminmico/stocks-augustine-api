@@ -7,10 +7,11 @@ const dynamoDB = new AWS.DynamoDB({
   endpoint: 'http://localhost:8000', // Point to local DynamoDB instance
 });
 
-describe('createCourse Integration Test', () => {
-  const testTableName = 'TestCourseTable';
-  process.env.AWS_ENV = 'LOCAL';
+const testTableName = 'COURSE_TABLE';
+process.env.AWS_ENV = 'LOCAL';
+process.env.COURSE_TABLE = testTableName;
 
+describe('createCourse Integration Test', () => {
   beforeAll(async () => {
     // Create the table
     await dynamoDB
@@ -51,9 +52,6 @@ describe('createCourse Integration Test', () => {
   });
 
   it('should create a course in DynamoDB', async () => {
-    // Set environment variable for table name
-    process.env.COURSE_TABLE = testTableName;
-
     const course = { name: 'Integration Test Course' };
 
     // Call the createCourse function

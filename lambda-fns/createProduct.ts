@@ -4,12 +4,15 @@ import { Product, ProductInput } from 'types/graphql-types';
 import { log, logError } from 'utils/logger';
 import { v4 as uuid } from 'uuid';
 
-const env = process.env.NODE_ENV || 'LOCAL';
-const config = getDynamoConfig(env);
-
-const docClient = new DynamoDB.DocumentClient(config);
-
 const createProduct = async (productInput: ProductInput) => {
+  const env = process.env.AWS_ENV;
+
+  const docClient = new DynamoDB.DocumentClient({
+    ...getDynamoConfig(env),
+    params: {
+      TableName: process.env.PRODUCT_TABLE as string,
+    },
+  });
   const productId = uuid();
   const product: Product = {
     productId,
@@ -20,6 +23,8 @@ const createProduct = async (productInput: ProductInput) => {
     TableName: process.env.PRODUCT_TABLE as string,
     Item: product,
   };
+
+  console.log('params', params);
 
   try {
     await docClient.put(params).promise();
