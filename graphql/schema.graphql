@@ -5,67 +5,67 @@ schema {
 }
 
 type Query {
-  listCourses(
+  getCourses(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): CourseConnection @aws_api_key @aws_cognito_user_pools
-  listProducts(
+  getProducts(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): [Product] @aws_api_key @aws_cognito_user_pools
-  listSuppliers(
+  getSuppliers(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): [Supplier] @aws_api_key @aws_cognito_user_pools
-  listStocks(
+  getStocks(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): [Stock] @aws_api_key @aws_cognito_user_pools
-  listOrders(
+  getOrders(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): [Order] @aws_api_key @aws_cognito_user_pools
-  listCategories(
+  getCategories(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): [Category] @aws_api_key @aws_cognito_user_pools
-  listSubcategories(
+  getSubcategories(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): [Subcategory] @aws_api_key @aws_cognito_user_pools
-  listMenus(
+  getMenus(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): [Menu] @aws_api_key @aws_cognito_user_pools
-  listMenuItems(
+  getMenuItems(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): [MenuItem] @aws_api_key @aws_cognito_user_pools
-  listSales(
+  getSales(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): [Sale] @aws_api_key @aws_cognito_user_pools
-  listSalesAnalysis(
+  getSalesAnalysis(
     filter: FilterInput
     sort: SortInput
     limit: Int
