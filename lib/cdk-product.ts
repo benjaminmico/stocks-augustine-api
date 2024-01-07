@@ -22,7 +22,7 @@ const createProductCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
       timeout: Duration.seconds(30),
       memorySize: 1024,
       environment: {
-        COURSE_TABLE: productDdbTable.tableName,
+        PRODUCT_TABLE: productDdbTable.tableName,
       },
     },
   );
