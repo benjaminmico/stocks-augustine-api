@@ -28,7 +28,7 @@ describe('Product Table', () => {
       expect.objectContaining({
         billingMode: ddb.BillingMode.PAY_PER_REQUEST,
         partitionKey: {
-          name: 'id',
+          name: 'productId',
           type: ddb.AttributeType.STRING,
         },
       }),
