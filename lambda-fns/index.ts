@@ -1,6 +1,6 @@
 import { Course, Product } from 'types/graphql-types';
-import createCourse from './createCourse';
-import createProduct from './createProduct';
+import createCourse from './createCourse/createCourse';
+import createProduct from './createProduct/createProduct';
 
 type AppSyncEvent = {
   info: {
