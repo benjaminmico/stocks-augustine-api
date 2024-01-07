@@ -17,7 +17,7 @@ const createCourseCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
     {
       functionName: `code-dev-AppSyncCourseHandler`,
       runtime: lambda.Runtime.NODEJS_18_X,
-      handler: 'index.course',
+      handler: 'index.handler', // Ensure this handler can route to different course operations
       entry: path.join(__dirname, `../lambda-fns/index.ts`),
       timeout: Duration.seconds(30),
       memorySize: 1024,
@@ -28,14 +28,17 @@ const createCourseCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
   );
   courseDdbTable.grantReadWriteData(courseLambda);
 
-  // Create Mutation
   if (api) {
-    const courseGraphQLResolver = {
+    const lambdaDataSource = api.addLambdaDataSource(
+      'courseLambdaDataSource',
+      courseLambda,
+    );
+
+    graphqlResolver.createGraphqlResolver({
       api,
-      lambdaFunction: courseLambda,
+      lambdaDataSource,
       baseResolverProps: { typeName: 'Mutation', fieldName: 'createCourse' },
-    };
-    graphqlResolver.createGraphqlResolver(courseGraphQLResolver);
+    });
   }
 };
 

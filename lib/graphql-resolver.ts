@@ -1,28 +1,21 @@
 // lib/graphql-resolver.ts
 
 import * as appsync from 'aws-cdk-lib/aws-appsync';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { getDataSourceName } from 'utils/getDataSourceName';
 
-export type GraqhQLResolverRequest = {
+export type GraphQLResolverRequest = {
   api: appsync.GraphqlApi;
-  lambdaFunction: lambda.Function;
+  lambdaDataSource: appsync.LambdaDataSource;
   baseResolverProps: appsync.BaseResolverProps;
 };
 
 export const createGraphqlResolver = (
-  graqhQLResolverRequest: GraqhQLResolverRequest,
+  graphQLResolverRequest: GraphQLResolverRequest,
 ) => {
   const {
     api,
-    lambdaFunction,
+    lambdaDataSource,
     baseResolverProps: { typeName, fieldName },
-  } = graqhQLResolverRequest;
-
-  const lambdaDataSource = api.addLambdaDataSource(
-    getDataSourceName(fieldName),
-    lambdaFunction,
-  );
+  } = graphQLResolverRequest;
 
   lambdaDataSource.createResolver(fieldName, {
     typeName,
