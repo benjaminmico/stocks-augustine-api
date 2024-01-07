@@ -8,7 +8,7 @@ import { productTable } from './tables/product-table';
 import { Duration, Stack } from 'aws-cdk-lib';
 import path = require('path');
 
-const createProductCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
+const productCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
   const productDdbTable = productTable(scope);
 
   const productLambda = new lambdaNodeJs.NodejsFunction(
@@ -17,7 +17,7 @@ const createProductCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
     {
       functionName: `code-dev-AppSyncProductHandler`,
       runtime: lambda.Runtime.NODEJS_18_X,
-      handler: 'index.product',
+      handler: 'index.handler', // Ensure your Lambda entry file has a handler that can route to different operations
       entry: path.join(__dirname, `../lambda-fns/index.ts`),
       timeout: Duration.seconds(30),
       memorySize: 1024,
@@ -28,15 +28,28 @@ const createProductCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
   );
   productDdbTable.grantReadWriteData(productLambda);
 
-  // Create Mutation
+  // Create Mutation for createProduct
   if (api) {
-    const productGraphQLResolver = {
+    graphqlResolver.createGraphqlResolver({
       api,
       lambdaFunction: productLambda,
       baseResolverProps: { typeName: 'Mutation', fieldName: 'createProduct' },
-    };
-    graphqlResolver.createGraphqlResolver(productGraphQLResolver);
+    });
+
+    // Create Mutation for updateProduct
+    graphqlResolver.createGraphqlResolver({
+      api,
+      lambdaFunction: productLambda,
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'updateProduct' },
+    });
+
+    // Create Query for getProducts
+    graphqlResolver.createGraphqlResolver({
+      api,
+      lambdaFunction: productLambda,
+      baseResolverProps: { typeName: 'Query', fieldName: 'getProducts' },
+    });
   }
 };
 
-export default createProductCDK;
+export default productCDK;

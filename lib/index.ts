@@ -5,7 +5,7 @@ import { Construct } from 'constructs';
 import * as api from './api';
 import createCourseCDK from './cdk-course';
 import createUserPool from './cognito/user-pool';
-import createProductCDK from './cdk-product';
+import productCDK from './cdk-product';
 
 export class CodeStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -19,6 +19,6 @@ export class CodeStack extends Stack {
 
     // Create tables, lambdas and GraphQL resolvers
     createCourseCDK(this, graphqlApi);
-    createProductCDK(this, graphqlApi);
+    productCDK(this, graphqlApi);
   }
 }
