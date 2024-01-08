@@ -77,8 +77,8 @@ describe('getProducts Integration Test', () => {
   it('should retrieve products from DynamoDB', async () => {
     const result = await getProducts(null, null, 10, null);
 
-    expect(result?.items.length).toBeGreaterThanOrEqual(2);
-    expect(result?.items).toEqual(
+    expect(result?.length).toBeGreaterThanOrEqual(2);
+    expect(result).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ productId: 'prod-1', name: 'Product 1' }),
         expect.objectContaining({ productId: 'prod-2', name: 'Product 2' }),
