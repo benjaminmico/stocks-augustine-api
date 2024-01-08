@@ -64,10 +64,7 @@ const getProducts = async (
   try {
     const data = await docClient.scan(params).promise(); // Use 'query' instead of 'scan' if querying against a specific index
     log({ message: 'Products retrieved' });
-    return {
-      items: data.Items as Product[],
-      nextToken: data.LastEvaluatedKey ? data.LastEvaluatedKey.productId : null,
-    };
+    return data.Items as Product[];
   } catch (err) {
     logError({ message: 'DynamoDB error:', error: err });
     return null;
