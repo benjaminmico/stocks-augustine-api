@@ -3,7 +3,7 @@
 import * as appsync from 'aws-cdk-lib/aws-appsync';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambdaNodeJs from 'aws-cdk-lib/aws-lambda-nodejs';
-import * as graphqlResolver from './graphql-resolver';
+import * as graphqlResolver from '../utils/graphql-resolver';
 import { courseTable } from './tables/course-table';
 import { Duration, Stack } from 'aws-cdk-lib';
 import path = require('path');
