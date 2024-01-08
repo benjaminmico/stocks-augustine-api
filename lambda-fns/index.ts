@@ -4,10 +4,13 @@ import {
   Product,
   ProductInput,
   SortInput,
+  UpdateProductInput,
 } from 'types/graphql-types';
 import createCourse from './createCourse/createCourse';
 import createProduct from './createProduct/createProduct';
 import getProducts from './getProducts/getProducts';
+import updateProduct from './updateProduct';
+import { log } from 'utils/logger';
 
 type CreateProductArgs = {
   productInput: ProductInput;
@@ -20,15 +23,16 @@ type GetProductsArgs = {
   nextToken: string | null;
 };
 
+type UpdateProductArgs = {
+  product: UpdateProductInput;
+};
+
 type AppSyncEvent = {
   info: {
     fieldName: string;
   };
   arguments: {
-    course: Course;
-    createProduct: CreateProductArgs;
-    getProducts: GetProductsArgs;
-    test: any;
+    product: any;
   };
   identity: {
     username: string;
@@ -48,16 +52,19 @@ export const course = async (event: AppSyncEvent) => {
 };
 
 export const product = async (event: AppSyncEvent) => {
+  log({ message: `Check: ${JSON.stringify(event)}` });
   switch (event.info.fieldName) {
     case 'createProduct':
-      return await createProduct(event.arguments.createProduct.productInput);
+      return await createProduct(event.arguments.product);
     case 'getProducts':
       return await getProducts(
-        event.arguments.getProducts?.filter,
-        event.arguments.getProducts?.sort,
-        event.arguments.getProducts?.limit,
-        event.arguments.getProducts?.nextToken,
+        event.arguments.product?.filter,
+        event.arguments.product?.sort,
+        event.arguments.product?.limit,
+        event.arguments.product?.nextToken,
       );
+    case 'updateProduct':
+      return await updateProduct(event.arguments.product);
     default:
       return null;
   }
