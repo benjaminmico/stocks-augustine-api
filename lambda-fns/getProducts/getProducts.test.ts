@@ -54,8 +54,7 @@ describe('getProducts', () => {
     const result = await getProducts(null, null, 10, null);
 
     expect(scanSpy).toHaveBeenCalled();
-    expect(result?.items).toEqual(mockProducts);
-    expect(result?.nextToken).toBeNull();
+    expect(result).toEqual(mockProducts);
   });
 
   it('should handle filtering', async () => {
@@ -81,6 +80,6 @@ describe('getProducts', () => {
         },
       }),
     );
-    expect(result?.items).toEqual(mockProducts);
+    expect(result).toEqual(mockProducts);
   });
 });
