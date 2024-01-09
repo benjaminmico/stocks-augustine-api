@@ -32,6 +32,7 @@ type AppSyncEvent = {
     fieldName: string;
   };
   arguments: {
+    course: any;
     product: any;
   };
   identity: {
