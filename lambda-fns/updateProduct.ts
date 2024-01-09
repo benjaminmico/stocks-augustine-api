@@ -1,4 +1,8 @@
 import { DynamoDB } from 'aws-sdk';
+import {
+  ExpressionAttributeNameMap,
+  ExpressionAttributeValueMap,
+} from 'aws-sdk/clients/dynamodb';
 import { getDynamoConfig } from 'config/dynamoConfig';
 import { Product, UpdateProductInput } from 'types/graphql-types';
 import { log, logError } from 'utils/logger';
@@ -12,29 +16,31 @@ const updateProduct = async (updateInput: UpdateProductInput) => {
       TableName: process.env.PRODUCT_TABLE as string,
     },
   });
+
   const { productId, ...updateData } = updateInput;
+
+  let UpdateExpression = 'set';
+  let ExpressionAttributeNames: ExpressionAttributeNameMap = {};
+  let ExpressionAttributeValues: ExpressionAttributeValueMap = {};
+
+  Object.entries(updateData).forEach(([key, value]) => {
+    if (value !== undefined) {
+      UpdateExpression += ` #${key} = :${key},`;
+      ExpressionAttributeNames[`#${key}`] = key;
+      //@ts-ignore
+      ExpressionAttributeValues[`:${key}`] = value;
+    }
+  });
+
+  // Remove trailing comma
+  UpdateExpression = UpdateExpression.slice(0, -1);
 
   const params: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
     TableName: process.env.PRODUCT_TABLE as string,
     Key: { productId },
-    UpdateExpression:
-      'set #name = :name, #unit = :unit, #saleFormat = :saleFormat, #price = :price, #unitOfMeasure = :unitOfMeasure, #supplierId = :supplierId',
-    ExpressionAttributeNames: {
-      '#name': 'name',
-      '#unit': 'unit',
-      '#saleFormat': 'saleFormat',
-      '#price': 'price',
-      '#unitOfMeasure': 'unitOfMeasure',
-      '#supplierId': 'supplierId',
-    },
-    ExpressionAttributeValues: {
-      ':name': updateData.name,
-      ':unit': updateData.unit,
-      ':saleFormat': updateData.saleFormat,
-      ':price': updateData.price,
-      ':unitOfMeasure': updateData.unitOfMeasure,
-      ':supplierId': updateData.supplierId,
-    },
+    UpdateExpression,
+    ExpressionAttributeNames,
+    ExpressionAttributeValues,
     ReturnValues: 'ALL_NEW',
   };
 

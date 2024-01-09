@@ -1,8 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
 import updateProduct from './updateProduct';
-
 import {
-  Product,
   UpdateProductInput,
   SaleFormat,
   UnitOfMeasure,
@@ -35,20 +33,33 @@ describe('updateProduct', () => {
   };
 
   it('should successfully update a product with valid input', async () => {
-    const updateInput = { ...validUpdateProductInput };
-
     updateSpy.mockReturnValue({
-      promise: jest.fn().mockResolvedValue({ Attributes: updateInput }),
+      promise: jest
+        .fn()
+        .mockResolvedValue({ Attributes: validUpdateProductInput }),
     } as any);
 
-    const result = await updateProduct(updateInput as unknown as Product);
+    const result = await updateProduct(validUpdateProductInput);
 
-    expect(updateSpy).toHaveBeenCalled();
+    expect(updateSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: 'TestProductTable',
+        Key: { productId: validUpdateProductInput.productId },
+        UpdateExpression: expect.stringContaining('set #name = :name'),
+        ExpressionAttributeNames: expect.objectContaining({
+          '#name': 'name',
+        }),
+        ExpressionAttributeValues: expect.objectContaining({
+          ':name': validUpdateProductInput.name,
+        }),
+        ReturnValues: 'ALL_NEW',
+      }),
+    );
     expect(logSpy).toHaveBeenCalledWith(
       expect.stringContaining(
-        `Product updated with ID: ${updateInput.productId}`,
+        `Product updated with ID: ${validUpdateProductInput.productId}`,
       ),
     );
-    expect(result).toMatchObject(updateInput);
+    expect(result).toMatchObject(validUpdateProductInput);
   });
 });

@@ -192,11 +192,11 @@ input ProductInput {
 
 input UpdateProductInput {
   productId: ID!
-  name: String!
-  unit: Float!
-  saleFormat: SaleFormat!
-  price: Float!
-  unitOfMeasure: UnitOfMeasure!
+  name: String
+  unit: Float
+  saleFormat: SaleFormat
+  price: Float
+  unitOfMeasure: UnitOfMeasure
   supplierId: ID
 }
 
