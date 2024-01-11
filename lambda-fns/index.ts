@@ -11,11 +11,7 @@ type AppSyncEvent = {
   info: {
     fieldName: string;
   };
-  arguments: {
-    course: any;
-    product: any;
-    supplier: any;
-  };
+  arguments: any;
   identity: {
     username: string;
     claims: {
@@ -47,7 +43,7 @@ export const product = async (event: AppSyncEvent) => {
     case 'updateProduct':
       return await updateProduct(event.arguments.product);
     case 'deleteProduct':
-      return await deleteProduct(event.arguments.product?.productId);
+      return await deleteProduct(event.arguments?.productId);
     default:
       return null;
   }
@@ -66,7 +62,7 @@ export const supplier = async (event: AppSyncEvent) => {
     case 'updateSupplier':
       return await updateSupplier(event.arguments.supplier);
     case 'deleteSupplier':
-      return await updateSupplier(event.arguments.supplier?.supplierId);
+      return await updateSupplier(event.arguments?.supplierId);
     default:
       return null;
   }
