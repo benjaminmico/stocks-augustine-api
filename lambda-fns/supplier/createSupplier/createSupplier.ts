@@ -1,39 +1,39 @@
 import { DynamoDB } from 'aws-sdk';
 import { getDynamoConfig } from 'config/dynamoConfig';
-import { Product, ProductInput } from 'types/graphql-types';
+import { Supplier, SupplierInput } from 'types/graphql-types';
 import { log, logError } from 'utils/logger';
 import { v4 as uuid } from 'uuid';
 
-const createProduct = async (productInput: ProductInput) => {
+const createSupplier = async (supplierInput: SupplierInput) => {
   const env = process.env.AWS_ENV;
 
   const docClient = new DynamoDB.DocumentClient({
     ...getDynamoConfig(env),
     params: {
-      TableName: process.env.PRODUCT_TABLE as string,
+      TableName: process.env.SUPPLIER_TABLE as string,
     },
   });
-  const productId = uuid();
-  const product: Product = {
-    productId,
-    ...productInput,
+  const supplierId = uuid();
+  const supplier: Supplier = {
+    supplierId,
+    ...supplierInput,
   };
 
   const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
-    TableName: process.env.PRODUCT_TABLE as string,
-    Item: product,
+    TableName: process.env.SUPPLIER_TABLE as string,
+    Item: supplier,
   };
 
   console.log('params', params);
 
   try {
     await docClient.put(params).promise();
-    log({ message: `Product created with ID: ${product.productId}` });
-    return product;
+    log({ message: `Supplier created with ID: ${supplier.supplierId}` });
+    return supplier;
   } catch (err) {
     logError({ message: 'DynamoDB error:', error: err });
     return null;
   }
 };
 
-export default createProduct;
+export default createSupplier;

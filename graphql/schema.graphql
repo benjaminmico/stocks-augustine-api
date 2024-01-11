@@ -81,7 +81,11 @@ type Mutation {
   deleteCourse(id: ID!): ID @aws_cognito_user_pools(cognito_groups: ["Admin"])
   createProduct(product: ProductInput!): Product
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  createSupplier(supplier: SupplierInput!): Supplier
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
   updateProduct(product: UpdateProductInput!): Product
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  updateSupplier(supplier: UpdateSupplierInput!): Supplier
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   deleteProduct(productId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
@@ -190,6 +194,10 @@ input ProductInput {
   supplierId: ID
 }
 
+input SupplierInput {
+  name: String!
+}
+
 input UpdateProductInput {
   productId: ID!
   name: String
@@ -198,6 +206,11 @@ input UpdateProductInput {
   price: Float
   unitOfMeasure: UnitOfMeasure
   supplierId: ID
+}
+
+input UpdateSupplierInput {
+  supplierId: ID!
+  name: String
 }
 
 input SyllabusInput {

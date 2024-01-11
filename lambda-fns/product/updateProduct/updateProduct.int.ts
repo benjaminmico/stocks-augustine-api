@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-import createProduct from './createProduct/createProduct';
+import createProduct from '../createProduct/createProduct';
 import updateProduct from './updateProduct';
 import {
   ProductInput,

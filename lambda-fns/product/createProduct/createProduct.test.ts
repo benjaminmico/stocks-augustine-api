@@ -1,7 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
 import createProduct from './createProduct';
-import { logError } from 'utils/logger';
-import { log } from 'console';
+
 import {
   Product,
   ProductInput,
@@ -41,7 +40,7 @@ describe('createProduct', () => {
       promise: jest.fn().mockResolvedValue({}),
     } as any);
 
-    const result = await createProduct(productInput as unknown as Product);
+    const result = await createProduct(productInput);
 
     expect(putSpy).toHaveBeenCalled();
     expect(logSpy).toHaveBeenCalledWith(

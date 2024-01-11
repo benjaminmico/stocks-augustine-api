@@ -1,31 +1,10 @@
-import {
-  Course,
-  FilterInput,
-  Product,
-  ProductInput,
-  SortInput,
-  UpdateProductInput,
-} from 'types/graphql-types';
 import createCourse from './createCourse/createCourse';
-import createProduct from './createProduct/createProduct';
-import getProducts from './getProducts/getProducts';
-import updateProduct from './updateProduct';
-import { log } from 'utils/logger';
-
-type CreateProductArgs = {
-  productInput: ProductInput;
-};
-
-type GetProductsArgs = {
-  filter: FilterInput | null;
-  sort: SortInput | null;
-  limit: number | null;
-  nextToken: string | null;
-};
-
-type UpdateProductArgs = {
-  product: UpdateProductInput;
-};
+import createProduct from './product/createProduct/createProduct';
+import getProducts from './product/getProducts/getProducts';
+import updateProduct from './product/updateProduct/updateProduct';
+import createSupplier from './supplier/createSupplier/createSupplier';
+import getSuppliers from './supplier/getSuppliers/getSuppliers';
+import updateSupplier from './supplier/updateSupplier/updateSupplier';
 
 type AppSyncEvent = {
   info: {
@@ -34,6 +13,7 @@ type AppSyncEvent = {
   arguments: {
     course: any;
     product: any;
+    supplier: any;
   };
   identity: {
     username: string;
@@ -53,7 +33,6 @@ export const course = async (event: AppSyncEvent) => {
 };
 
 export const product = async (event: AppSyncEvent) => {
-  log({ message: `Check: ${JSON.stringify(event)}` });
   switch (event.info.fieldName) {
     case 'createProduct':
       return await createProduct(event.arguments.product);
@@ -66,6 +45,23 @@ export const product = async (event: AppSyncEvent) => {
       );
     case 'updateProduct':
       return await updateProduct(event.arguments.product);
+    default:
+      return null;
+  }
+};
+export const supplier = async (event: AppSyncEvent) => {
+  switch (event.info.fieldName) {
+    case 'createSupplier':
+      return await createSupplier(event.arguments.supplier);
+    case 'getSuppliers':
+      return await getSuppliers(
+        event.arguments.supplier?.filter,
+        event.arguments.supplier?.sort,
+        event.arguments.supplier?.limit,
+        event.arguments.supplier?.nextToken,
+      );
+    case 'updateSupplier':
+      return await updateSupplier(event.arguments.supplier);
     default:
       return null;
   }

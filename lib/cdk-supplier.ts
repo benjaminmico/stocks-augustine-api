@@ -1,55 +1,55 @@
-// lib/product-table.ts
+// lib/supplier-table.ts
 
 import * as appsync from 'aws-cdk-lib/aws-appsync';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambdaNodeJs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as graphqlResolver from '../utils/graphql-resolver';
-import { productTable } from './tables/product-table';
+import { supplierTable } from './tables/supplier-table';
 import { Duration, Stack } from 'aws-cdk-lib';
 import path = require('path');
 import { getDataSourceName } from 'utils/getDataSourceName';
 
-const createProductCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
-  const productDdbTable = productTable(scope);
+const createSupplierCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
+  const supplierDdbTable = supplierTable(scope);
 
-  const productLambda = new lambdaNodeJs.NodejsFunction(
+  const supplierLambda = new lambdaNodeJs.NodejsFunction(
     scope,
-    'AppSyncProductHandler',
+    'AppSyncSupplierHandler',
     {
-      functionName: `code-dev-AppSyncProductHandler`,
+      functionName: `code-dev-AppSyncSupplierHandler`,
       runtime: lambda.Runtime.NODEJS_18_X,
-      handler: 'index.product',
+      handler: 'index.supplier',
       entry: path.join(__dirname, `../lambda-fns/index.ts`),
       timeout: Duration.seconds(30),
       memorySize: 1024,
       environment: {
-        PRODUCT_TABLE: productDdbTable.tableName,
+        SUPPLIER_TABLE: supplierDdbTable.tableName,
       },
     },
   );
-  productDdbTable.grantReadWriteData(productLambda);
+  supplierDdbTable.grantReadWriteData(supplierLambda);
 
   if (api) {
     const lambdaDataSource = api.addLambdaDataSource(
-      getDataSourceName('product'),
-      productLambda,
+      getDataSourceName('supplier'),
+      supplierLambda,
     );
 
     graphqlResolver.createGraphqlResolver({
       lambdaDataSource,
-      baseResolverProps: { typeName: 'Mutation', fieldName: 'createProduct' },
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'createSupplier' },
     });
 
     graphqlResolver.createGraphqlResolver({
       lambdaDataSource,
-      baseResolverProps: { typeName: 'Mutation', fieldName: 'updateProduct' },
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'updateSupplier' },
     });
 
     graphqlResolver.createGraphqlResolver({
       lambdaDataSource,
-      baseResolverProps: { typeName: 'Query', fieldName: 'getProducts' },
+      baseResolverProps: { typeName: 'Query', fieldName: 'getSuppliers' },
     });
   }
 };
 
-export default createProductCDK;
+export default createSupplierCDK;
