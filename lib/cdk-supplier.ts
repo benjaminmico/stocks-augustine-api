@@ -47,6 +47,11 @@ const createSupplierCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
 
     graphqlResolver.createGraphqlResolver({
       lambdaDataSource,
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'deleteSupplier' },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource,
       baseResolverProps: { typeName: 'Query', fieldName: 'getSuppliers' },
     });
   }

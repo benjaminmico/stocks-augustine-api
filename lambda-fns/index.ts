@@ -1,5 +1,6 @@
 import createCourse from './createCourse/createCourse';
 import createProduct from './product/createProduct/createProduct';
+import deleteProduct from './product/deleteProduct/deleteProduct';
 import getProducts from './product/getProducts/getProducts';
 import updateProduct from './product/updateProduct/updateProduct';
 import createSupplier from './supplier/createSupplier/createSupplier';
@@ -45,6 +46,8 @@ export const product = async (event: AppSyncEvent) => {
       );
     case 'updateProduct':
       return await updateProduct(event.arguments.product);
+    case 'deleteProduct':
+      return await deleteProduct(event.arguments.product?.productId);
     default:
       return null;
   }
@@ -62,6 +65,8 @@ export const supplier = async (event: AppSyncEvent) => {
       );
     case 'updateSupplier':
       return await updateSupplier(event.arguments.supplier);
+    case 'deleteSupplier':
+      return await updateSupplier(event.arguments.supplier?.supplierId);
     default:
       return null;
   }

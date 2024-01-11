@@ -89,6 +89,8 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   deleteProduct(productId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  deleteSupplier(supplierId: ID!): ID
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
 }
 
 type Subscription {

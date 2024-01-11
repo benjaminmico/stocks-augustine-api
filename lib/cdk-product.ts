@@ -47,6 +47,11 @@ const createProductCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
 
     graphqlResolver.createGraphqlResolver({
       lambdaDataSource,
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'deleteProduct' },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource,
       baseResolverProps: { typeName: 'Query', fieldName: 'getProducts' },
     });
   }
