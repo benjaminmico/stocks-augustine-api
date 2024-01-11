@@ -4,6 +4,7 @@ import deleteProduct from './product/deleteProduct/deleteProduct';
 import getProducts from './product/getProducts/getProducts';
 import updateProduct from './product/updateProduct/updateProduct';
 import createSupplier from './supplier/createSupplier/createSupplier';
+import deleteSupplier from './supplier/deleteSupplier/deleteSupplier';
 import getSuppliers from './supplier/getSuppliers/getSuppliers';
 import updateSupplier from './supplier/updateSupplier/updateSupplier';
 
@@ -62,7 +63,7 @@ export const supplier = async (event: AppSyncEvent) => {
     case 'updateSupplier':
       return await updateSupplier(event.arguments.supplier);
     case 'deleteSupplier':
-      return await updateSupplier(event.arguments?.supplierId);
+      return await deleteSupplier(event.arguments?.supplierId);
     default:
       return null;
   }
