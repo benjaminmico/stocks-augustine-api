@@ -2,20 +2,30 @@
 
 import * as appsync from 'aws-cdk-lib/aws-appsync';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as lambdaNodeJs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as graphqlResolver from '../utils/graphql-resolver';
 import { productTable } from './tables/product-table';
-import { Duration, Stack } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import path = require('path');
 import { getDataSourceName } from 'utils/getDataSourceName';
 import { restaurantTable } from './tables/restaurant-table';
 import { supplierTable } from './tables/supplier-table';
 
 const mainCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
+  // DynamoDB
   const productDdbTable = productTable(scope);
   const restaurantDdbTable = restaurantTable(scope);
   const supplierDdbTable = supplierTable(scope);
 
+  // S3
+  const invoiceBucket = new s3.Bucket(scope, 'InvoiceBucket', {
+    versioned: true,
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  });
+
+  // Lambdas
   const productLambda = new lambdaNodeJs.NodejsFunction(
     scope,
     'AppSyncProductHandler',
@@ -30,6 +40,7 @@ const mainCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
         PRODUCT_TABLE: productDdbTable.tableName,
         RESTAURANT_TABLE: restaurantDdbTable.tableName,
         SUPPLIER_TABLE: supplierDdbTable.tableName,
+        INVOICE_BUCKET_NAME: invoiceBucket.bucketName,
       },
     },
   );
@@ -74,6 +85,7 @@ const mainCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
   supplierDdbTable.grantReadWriteData(supplierLambda);
   supplierDdbTable.grantReadWriteData(productLambda);
 
+  // Data source
   if (api) {
     const productLambdaDataSource = api.addLambdaDataSource(
       getDataSourceName('product'),
@@ -99,6 +111,11 @@ const mainCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
     graphqlResolver.createGraphqlResolver({
       lambdaDataSource: productLambdaDataSource,
       baseResolverProps: { typeName: 'Query', fieldName: 'getProducts' },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: productLambdaDataSource,
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'scanInvoice' },
     });
 
     // Restaurants

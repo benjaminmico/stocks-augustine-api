@@ -2,6 +2,7 @@ import createCourse from './createCourse/createCourse';
 import createProduct from './product/createProduct/createProduct';
 import deleteProduct from './product/deleteProduct/deleteProduct';
 import getProducts from './product/getProducts/getProducts';
+import scanInvoice from './product/scanInvoice/scanInvoice';
 import updateProduct from './product/updateProduct/updateProduct';
 import createRestaurant from './restaurant/createRestaurant/createRestaurant';
 import deleteRestaurant from './restaurant/deleteRestaurant/deleteRestaurant';
@@ -49,6 +50,8 @@ export const product = async (event: AppSyncEvent) => {
       return await updateProduct(event.arguments.product);
     case 'deleteProduct':
       return await deleteProduct(event.arguments?.productId);
+    case 'scanInvoice':
+      return await scanInvoice(event.arguments?.file);
     default:
       return null;
   }
