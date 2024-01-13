@@ -9,6 +9,7 @@ const createProduct = async (productInput: ProductInput) => {
   const env = process.env.AWS_ENV;
 
   const restaurantExists = await doesDynamoDBEntryExist(
+    'restaurantId',
     productInput.restaurantId,
     process.env.RESTAURANT_TABLE as string,
     env,
@@ -16,21 +17,6 @@ const createProduct = async (productInput: ProductInput) => {
   if (!restaurantExists) {
     logError({
       message: `Restaurant with ID ${productInput.restaurantId} does not exist`,
-    });
-    return null;
-  }
-
-  console.log('aaaa');
-
-  const supplierExists = await doesDynamoDBEntryExist(
-    productInput.restaurantId,
-    process.env.SUPPLIER_TABLE as string,
-    env,
-  );
-  if (!supplierExists) {
-    console.log('bbb');
-    logError({
-      message: `Supplier with ID ${productInput.supplierId} does not exist`,
     });
     return null;
   }

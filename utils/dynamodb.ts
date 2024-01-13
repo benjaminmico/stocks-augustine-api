@@ -4,7 +4,8 @@ import { logError } from './logger';
 
 // Helper function to check if an entry with a given ID exists in a specified table
 export const doesDynamoDBEntryExist = async (
-  id: string,
+  keyId: string,
+  value: string,
   tableName: string,
   env?: string,
 ): Promise<boolean> => {
@@ -14,7 +15,7 @@ export const doesDynamoDBEntryExist = async (
     const params: AWS.DynamoDB.DocumentClient.GetItemInput = {
       TableName: tableName,
       Key: {
-        id,
+        [keyId]: value,
       },
     };
 
