@@ -1,0 +1,167 @@
+// lib/product-table.ts
+
+import * as appsync from 'aws-cdk-lib/aws-appsync';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as lambdaNodeJs from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as graphqlResolver from '../utils/graphql-resolver';
+import { productTable } from './tables/product-table';
+import { Duration, Stack } from 'aws-cdk-lib';
+import path = require('path');
+import { getDataSourceName } from 'utils/getDataSourceName';
+import { restaurantTable } from './tables/restaurant-table';
+import { supplierTable } from './tables/supplier-table';
+
+const mainCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
+  const productDdbTable = productTable(scope);
+  const restaurantDdbTable = restaurantTable(scope);
+  const supplierDdbTable = supplierTable(scope);
+
+  const productLambda = new lambdaNodeJs.NodejsFunction(
+    scope,
+    'AppSyncProductHandler',
+    {
+      functionName: `code-dev-AppSyncProductHandler`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.product',
+      entry: path.join(__dirname, `../lambda-fns/index.ts`),
+      timeout: Duration.seconds(30),
+      memorySize: 1024,
+      environment: {
+        PRODUCT_TABLE: productDdbTable.tableName,
+        RESTAURANT_TABLE: restaurantDdbTable.tableName,
+        SUPPLIER_TABLE: supplierDdbTable.tableName,
+      },
+    },
+  );
+
+  const restaurantLambda = new lambdaNodeJs.NodejsFunction(
+    scope,
+    'AppSyncRestaurantHandler',
+    {
+      functionName: `code-dev-AppSyncRestaurantHandler`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.restaurant',
+      entry: path.join(__dirname, `../lambda-fns/index.ts`),
+      timeout: Duration.seconds(30),
+      memorySize: 1024,
+      environment: {
+        RESTAURANT_TABLE: restaurantDdbTable.tableName,
+      },
+    },
+  );
+
+  const supplierLambda = new lambdaNodeJs.NodejsFunction(
+    scope,
+    'AppSyncSupplierHandler',
+    {
+      functionName: `code-dev-AppSyncSupplierHandler`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.supplier',
+      entry: path.join(__dirname, `../lambda-fns/index.ts`),
+      timeout: Duration.seconds(30),
+      memorySize: 1024,
+      environment: {
+        SUPPLIER_TABLE: supplierDdbTable.tableName,
+      },
+    },
+  );
+
+  restaurantDdbTable.grantReadWriteData(restaurantLambda);
+  restaurantDdbTable.grantReadWriteData(productLambda);
+
+  productDdbTable.grantReadWriteData(productLambda);
+
+  supplierDdbTable.grantReadWriteData(supplierLambda);
+  supplierDdbTable.grantReadWriteData(productLambda);
+
+  if (api) {
+    const productLambdaDataSource = api.addLambdaDataSource(
+      getDataSourceName('product'),
+      productLambda,
+    );
+
+    // Products
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: productLambdaDataSource,
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'createProduct' },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: productLambdaDataSource,
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'updateProduct' },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: productLambdaDataSource,
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'deleteProduct' },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: productLambdaDataSource,
+      baseResolverProps: { typeName: 'Query', fieldName: 'getProducts' },
+    });
+
+    // Restaurants
+    const restaurantLambdaDataSource = api.addLambdaDataSource(
+      getDataSourceName('restaurant'),
+      restaurantLambda,
+    );
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: restaurantLambdaDataSource,
+      baseResolverProps: {
+        typeName: 'Mutation',
+        fieldName: 'createRestaurant',
+      },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: restaurantLambdaDataSource,
+      baseResolverProps: {
+        typeName: 'Mutation',
+        fieldName: 'updateRestaurant',
+      },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: restaurantLambdaDataSource,
+      baseResolverProps: {
+        typeName: 'Mutation',
+        fieldName: 'deleteRestaurant',
+      },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: restaurantLambdaDataSource,
+      baseResolverProps: { typeName: 'Query', fieldName: 'getRestaurants' },
+    });
+
+    // Supplier
+    const supplierLambdaDataSource = api.addLambdaDataSource(
+      getDataSourceName('supplier'),
+      supplierLambda,
+    );
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: supplierLambdaDataSource,
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'createSupplier' },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: supplierLambdaDataSource,
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'updateSupplier' },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: supplierLambdaDataSource,
+      baseResolverProps: { typeName: 'Mutation', fieldName: 'deleteSupplier' },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: supplierLambdaDataSource,
+      baseResolverProps: { typeName: 'Query', fieldName: 'getSuppliers' },
+    });
+  }
+};
+
+export default mainCDK;
