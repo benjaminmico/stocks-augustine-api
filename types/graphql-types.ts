@@ -18,6 +18,7 @@ export type Category = {
   __typename?: 'Category';
   categoryId: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  restaurantId: Scalars['ID']['output'];
 };
 
 export type Course = {
@@ -69,6 +70,7 @@ export type Menu = {
   menuId: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   price?: Maybe<Scalars['Float']['output']>;
+  restaurantId: Scalars['ID']['output'];
 };
 
 export type MenuItem = {
@@ -78,6 +80,7 @@ export type MenuItem = {
   menuItemId: Scalars['ID']['output'];
   product?: Maybe<Product>;
   productId: Scalars['ID']['output'];
+  restaurantId: Scalars['ID']['output'];
   unitOfMeasure?: Maybe<UnitOfMeasure>;
   usedQuantity?: Maybe<Scalars['Float']['output']>;
 };
@@ -196,6 +199,7 @@ export type Product = {
   packageWeight?: Maybe<Scalars['Float']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   productId: Scalars['ID']['output'];
+  restaurantId: Scalars['ID']['output'];
   saleFormat?: Maybe<SaleFormat>;
   supplier?: Maybe<Supplier>;
   supplierId: Scalars['ID']['output'];
@@ -205,6 +209,7 @@ export type Product = {
 export type ProductInput = {
   name: Scalars['String']['input'];
   price: Scalars['Float']['input'];
+  restaurantId: Scalars['ID']['input'];
   saleFormat: SaleFormat;
   supplierId?: InputMaybe<Scalars['ID']['input']>;
   unit: Scalars['Float']['input'];
@@ -338,6 +343,7 @@ export type Sale = {
   menu?: Maybe<Menu>;
   menuId: Scalars['ID']['output'];
   quantitySold?: Maybe<Scalars['Int']['output']>;
+  restaurantId: Scalars['ID']['output'];
   saleDate?: Maybe<Scalars['String']['output']>;
   saleId: Scalars['ID']['output'];
 };
@@ -352,6 +358,7 @@ export type SalesAnalysis = {
   analysisId: Scalars['ID']['output'];
   lossPercentage?: Maybe<Scalars['Float']['output']>;
   margin?: Maybe<Scalars['Float']['output']>;
+  restaurantId: Scalars['ID']['output'];
   sale?: Maybe<Sale>;
   saleId: Scalars['ID']['output'];
   salePrice?: Maybe<Scalars['Float']['output']>;
@@ -375,6 +382,7 @@ export type Stock = {
   lastUpdateDate?: Maybe<Scalars['String']['output']>;
   product?: Maybe<Product>;
   productId: Scalars['ID']['output'];
+  restaurantId: Scalars['ID']['output'];
   stockId: Scalars['ID']['output'];
 };
 
@@ -383,6 +391,7 @@ export type Subcategory = {
   category?: Maybe<Category>;
   categoryId: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  restaurantId: Scalars['ID']['output'];
   subcategoryId: Scalars['ID']['output'];
 };
 

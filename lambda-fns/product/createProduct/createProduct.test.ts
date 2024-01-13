@@ -7,6 +7,11 @@ import {
   SaleFormat,
   UnitOfMeasure,
 } from 'types/graphql-types';
+import { doesDynamoDBEntryExist } from 'utils/dynamodb';
+
+jest.mock('utils/dynamodb', () => ({
+  doesDynamoDBEntryExist: jest.fn(),
+}));
 
 const putSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'put');
 
@@ -31,10 +36,16 @@ describe('createProduct', () => {
     price: 19.99,
     unitOfMeasure: UnitOfMeasure.Unit,
     supplierId: 'supplier123',
+    restaurantId: 'restaurant123',
   };
 
   it('should successfully create a product with valid input', async () => {
     const productInput = { ...validProductInput };
+
+    // Mock the behavior of doesDynamoDBEntryExist
+    (doesDynamoDBEntryExist as jest.MockedFunction<any>).mockResolvedValue(
+      true,
+    );
 
     putSpy.mockReturnValue({
       promise: jest.fn().mockResolvedValue({}),

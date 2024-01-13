@@ -205,6 +205,7 @@ input ProductInput {
   saleFormat: SaleFormat!
   price: Float!
   unitOfMeasure: UnitOfMeasure!
+  restaurantId: ID!
   supplierId: ID
 }
 
@@ -254,6 +255,7 @@ type Product @aws_api_key @aws_cognito_user_pools {
   saleFormat: SaleFormat
   price: Float
   supplierId: ID!
+  restaurantId: ID!
   unitOfMeasure: UnitOfMeasure
   supplier: Supplier
 }
@@ -275,6 +277,7 @@ type Stock @aws_api_key @aws_cognito_user_pools {
   alertThreshold: Int
   lastUpdateDate: String
   product: Product
+  restaurantId: ID!
 }
 
 type Order @aws_api_key @aws_cognito_user_pools {
@@ -288,11 +291,13 @@ type Order @aws_api_key @aws_cognito_user_pools {
 
 type Category @aws_api_key @aws_cognito_user_pools {
   categoryId: ID!
+  restaurantId: ID!
   name: String!
 }
 
 type Subcategory @aws_api_key @aws_cognito_user_pools {
   subcategoryId: ID!
+  restaurantId: ID!
   name: String!
   categoryId: ID!
   category: Category
@@ -301,6 +306,7 @@ type Subcategory @aws_api_key @aws_cognito_user_pools {
 type Menu @aws_api_key @aws_cognito_user_pools {
   menuId: ID!
   categoryId: ID!
+  restaurantId: ID!
   name: String!
   description: String
   price: Float
@@ -310,6 +316,7 @@ type Menu @aws_api_key @aws_cognito_user_pools {
 type MenuItem @aws_api_key @aws_cognito_user_pools {
   menuItemId: ID!
   productId: ID!
+  restaurantId: ID!
   menuId: ID!
   usedQuantity: Float
   unitOfMeasure: UnitOfMeasure
@@ -320,6 +327,7 @@ type MenuItem @aws_api_key @aws_cognito_user_pools {
 type Sale @aws_api_key @aws_cognito_user_pools {
   saleId: ID!
   menuId: ID!
+  restaurantId: ID!
   quantitySold: Int
   saleDate: String
   menu: Menu
@@ -328,6 +336,7 @@ type Sale @aws_api_key @aws_cognito_user_pools {
 type SalesAnalysis @aws_api_key @aws_cognito_user_pools {
   analysisId: ID!
   saleId: ID!
+  restaurantId: ID!
   margin: Float
   lossPercentage: Float
   salePrice: Float

@@ -48,6 +48,7 @@ describe('createProduct Integration Test', () => {
       price: 10.99,
       unitOfMeasure: UnitOfMeasure.Unit,
       supplierId: 'supplier123',
+      restaurantId: 'restaurant123',
     };
 
     const result = await createProduct(productInput);

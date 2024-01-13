@@ -1,11 +1,39 @@
 import { DynamoDB } from 'aws-sdk';
 import { getDynamoConfig } from 'config/dynamoConfig';
 import { Product, ProductInput } from 'types/graphql-types';
+import { doesDynamoDBEntryExist } from 'utils/dynamodb';
 import { log, logError } from 'utils/logger';
 import { v4 as uuid } from 'uuid';
 
 const createProduct = async (productInput: ProductInput) => {
   const env = process.env.AWS_ENV;
+
+  const restaurantExists = await doesDynamoDBEntryExist(
+    productInput.restaurantId,
+    process.env.RESTAURANT_TABLE as string,
+    env,
+  );
+  if (!restaurantExists) {
+    logError({
+      message: `Restaurant with ID ${productInput.restaurantId} does not exist`,
+    });
+    return null;
+  }
+
+  console.log('aaaa');
+
+  const supplierExists = await doesDynamoDBEntryExist(
+    productInput.restaurantId,
+    process.env.SUPPLIER_TABLE as string,
+    env,
+  );
+  if (!supplierExists) {
+    console.log('bbb');
+    logError({
+      message: `Supplier with ID ${productInput.supplierId} does not exist`,
+    });
+    return null;
+  }
 
   const docClient = new DynamoDB.DocumentClient({
     ...getDynamoConfig(env),
@@ -23,8 +51,6 @@ const createProduct = async (productInput: ProductInput) => {
     TableName: process.env.PRODUCT_TABLE as string,
     Item: product,
   };
-
-  console.log('params', params);
 
   try {
     await docClient.put(params).promise();
