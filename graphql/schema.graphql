@@ -17,6 +17,12 @@ type Query {
     limit: Int
     nextToken: String
   ): [Product] @aws_api_key @aws_cognito_user_pools
+  getRestaurants(
+    filter: FilterInput
+    sort: SortInput
+    limit: Int
+    nextToken: String
+  ): [Restaurant] @aws_api_key @aws_cognito_user_pools
   getSuppliers(
     filter: FilterInput
     sort: SortInput
@@ -81,13 +87,19 @@ type Mutation {
   deleteCourse(id: ID!): ID @aws_cognito_user_pools(cognito_groups: ["Admin"])
   createProduct(product: ProductInput!): Product
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  createRestaurant(restaurant: RestaurantInput!): Restaurant
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
   createSupplier(supplier: SupplierInput!): Supplier
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   updateProduct(product: UpdateProductInput!): Product
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  updateRestaurant(restaurant: UpdateRestaurantInput!): Restaurant
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
   updateSupplier(supplier: UpdateSupplierInput!): Supplier
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   deleteProduct(productId: ID!): ID
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  deleteRestaurant(restaurantId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   deleteSupplier(supplierId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
@@ -196,6 +208,10 @@ input ProductInput {
   supplierId: ID
 }
 
+input RestaurantInput {
+  name: String!
+}
+
 input SupplierInput {
   name: String!
 }
@@ -212,6 +228,11 @@ input UpdateProductInput {
 
 input UpdateSupplierInput {
   supplierId: ID!
+  name: String
+}
+
+input UpdateRestaurantInput {
+  restaurantId: ID!
   name: String
 }
 
@@ -235,6 +256,11 @@ type Product @aws_api_key @aws_cognito_user_pools {
   supplierId: ID!
   unitOfMeasure: UnitOfMeasure
   supplier: Supplier
+}
+
+type Restaurant @aws_api_key @aws_cognito_user_pools {
+  restaurantId: ID!
+  name: String!
 }
 
 type Supplier @aws_api_key @aws_cognito_user_pools {

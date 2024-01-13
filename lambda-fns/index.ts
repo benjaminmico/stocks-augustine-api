@@ -3,6 +3,10 @@ import createProduct from './product/createProduct/createProduct';
 import deleteProduct from './product/deleteProduct/deleteProduct';
 import getProducts from './product/getProducts/getProducts';
 import updateProduct from './product/updateProduct/updateProduct';
+import createRestaurant from './restaurant/createRestaurant/createRestaurant';
+import deleteRestaurant from './restaurant/deleteRestaurant/deleteRestaurant';
+import getRestaurants from './restaurant/getRestaurants/getRestaurants';
+import updateRestaurant from './restaurant/updateRestaurant/updateRestaurant';
 import createSupplier from './supplier/createSupplier/createSupplier';
 import deleteSupplier from './supplier/deleteSupplier/deleteSupplier';
 import getSuppliers from './supplier/getSuppliers/getSuppliers';
@@ -49,6 +53,7 @@ export const product = async (event: AppSyncEvent) => {
       return null;
   }
 };
+
 export const supplier = async (event: AppSyncEvent) => {
   switch (event.info.fieldName) {
     case 'createSupplier':
@@ -64,6 +69,26 @@ export const supplier = async (event: AppSyncEvent) => {
       return await updateSupplier(event.arguments.supplier);
     case 'deleteSupplier':
       return await deleteSupplier(event.arguments?.supplierId);
+    default:
+      return null;
+  }
+};
+
+export const restaurant = async (event: AppSyncEvent) => {
+  switch (event.info.fieldName) {
+    case 'createRestaurant':
+      return await createRestaurant(event.arguments.restaurant);
+    case 'getRestaurants':
+      return await getRestaurants(
+        event.arguments.restaurant?.filter,
+        event.arguments.restaurant?.sort,
+        event.arguments.restaurant?.limit,
+        event.arguments.restaurant?.nextToken,
+      );
+    case 'updateRestaurant':
+      return await updateRestaurant(event.arguments.restaurant);
+    case 'deleteRestaurant':
+      return await deleteRestaurant(event.arguments?.restaurantId);
     default:
       return null;
   }

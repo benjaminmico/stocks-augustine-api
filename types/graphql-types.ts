@@ -103,11 +103,15 @@ export type Mutation = {
   __typename?: 'Mutation';
   createCourse?: Maybe<Course>;
   createProduct?: Maybe<Product>;
+  createRestaurant?: Maybe<Restaurant>;
   createSupplier?: Maybe<Supplier>;
   deleteCourse?: Maybe<Scalars['ID']['output']>;
   deleteProduct?: Maybe<Scalars['ID']['output']>;
+  deleteRestaurant?: Maybe<Scalars['ID']['output']>;
+  deleteSupplier?: Maybe<Scalars['ID']['output']>;
   updateCourse?: Maybe<Course>;
   updateProduct?: Maybe<Product>;
+  updateRestaurant?: Maybe<Restaurant>;
   updateSupplier?: Maybe<Supplier>;
 };
 
@@ -122,8 +126,13 @@ export type MutationCreateProductArgs = {
 };
 
 
+export type MutationCreateRestaurantArgs = {
+  restaurant: RestaurantInput;
+};
+
+
 export type MutationCreateSupplierArgs = {
-  product: SupplierInput;
+  supplier: SupplierInput;
 };
 
 
@@ -137,6 +146,16 @@ export type MutationDeleteProductArgs = {
 };
 
 
+export type MutationDeleteRestaurantArgs = {
+  restaurantId: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteSupplierArgs = {
+  supplierId: Scalars['ID']['input'];
+};
+
+
 export type MutationUpdateCourseArgs = {
   course: UpdateCourseInput;
 };
@@ -144,6 +163,11 @@ export type MutationUpdateCourseArgs = {
 
 export type MutationUpdateProductArgs = {
   product: UpdateProductInput;
+};
+
+
+export type MutationUpdateRestaurantArgs = {
+  restaurant: UpdateRestaurantInput;
 };
 
 
@@ -195,6 +219,7 @@ export type Query = {
   getMenus?: Maybe<Array<Maybe<Menu>>>;
   getOrders?: Maybe<Array<Maybe<Order>>>;
   getProducts?: Maybe<Array<Maybe<Product>>>;
+  getRestaurants?: Maybe<Array<Maybe<Restaurant>>>;
   getSales?: Maybe<Array<Maybe<Sale>>>;
   getSalesAnalysis?: Maybe<Array<Maybe<SalesAnalysis>>>;
   getStocks?: Maybe<Array<Maybe<Stock>>>;
@@ -251,6 +276,14 @@ export type QueryGetProductsArgs = {
 };
 
 
+export type QueryGetRestaurantsArgs = {
+  filter?: InputMaybe<FilterInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  nextToken?: InputMaybe<Scalars['String']['input']>;
+  sort?: InputMaybe<SortInput>;
+};
+
+
 export type QueryGetSalesArgs = {
   filter?: InputMaybe<FilterInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -288,6 +321,16 @@ export type QueryGetSuppliersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   nextToken?: InputMaybe<Scalars['String']['input']>;
   sort?: InputMaybe<SortInput>;
+};
+
+export type Restaurant = {
+  __typename?: 'Restaurant';
+  name: Scalars['String']['output'];
+  restaurantId: Scalars['ID']['output'];
+};
+
+export type RestaurantInput = {
+  name: Scalars['String']['input'];
 };
 
 export type Sale = {
@@ -404,6 +447,11 @@ export type UpdateProductInput = {
   supplierId?: InputMaybe<Scalars['ID']['input']>;
   unit?: InputMaybe<Scalars['Float']['input']>;
   unitOfMeasure?: InputMaybe<UnitOfMeasure>;
+};
+
+export type UpdateRestaurantInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+  restaurantId: Scalars['ID']['input'];
 };
 
 export type UpdateSupplierInput = {

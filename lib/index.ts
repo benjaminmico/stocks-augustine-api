@@ -7,6 +7,7 @@ import createCourseCDK from './cdk-course';
 import createUserPool from './cognito/user-pool';
 import createProductCDK from './cdk-product';
 import createSupplierCDK from './cdk-supplier';
+import createRestaurantCDK from './cdk-restaurant';
 
 export class CodeStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -22,5 +23,6 @@ export class CodeStack extends Stack {
     createCourseCDK(this, graphqlApi);
     createProductCDK(this, graphqlApi);
     createSupplierCDK(this, graphqlApi);
+    createRestaurantCDK(this, graphqlApi);
   }
 }
