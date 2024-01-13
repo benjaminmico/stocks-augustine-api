@@ -46,6 +46,7 @@ describe('updateSupplier Integration Test', () => {
     const createInput: Supplier = {
       name: 'Initial Supplier',
       supplierId: 'supplier123',
+      restaurantId: 'restaurant123',
     };
     const createdSupplier = await createSupplier(createInput);
 

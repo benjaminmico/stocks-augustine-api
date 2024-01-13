@@ -55,6 +55,7 @@ describe('updateProduct Integration Test', () => {
       price: 10.99,
       unitOfMeasure: UnitOfMeasure.Unit,
       supplierId: 'supplier123',
+      restaurantId: 'restaurant123',
     };
     const createdProduct = await createProduct(createInput);
 

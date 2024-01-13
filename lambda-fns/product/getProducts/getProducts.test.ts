@@ -16,6 +16,7 @@ const mockProducts: Product[] = [
     saleFormat: SaleFormat.Individual,
     price: 10.99,
     supplierId: 'supplier-1',
+    restaurantId: 'restaurant-1',
     unitOfMeasure: UnitOfMeasure.Unit,
   },
   {
@@ -25,6 +26,7 @@ const mockProducts: Product[] = [
     saleFormat: SaleFormat.Package,
     price: 20.99,
     supplierId: 'supplier-2',
+    restaurantId: 'restaurant-2',
     unitOfMeasure: UnitOfMeasure.Kilogram,
   },
 ];
