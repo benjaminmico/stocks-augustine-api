@@ -103,7 +103,7 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   deleteSupplier(supplierId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
-  scanInvoice(file: Upload!): String
+  scanInvoice(file: String!): File!
 }
 
 type Subscription {
@@ -356,4 +356,6 @@ enum SaleFormat {
   Package
 }
 
-scalar Upload
+type File {
+  url: String!
+}
