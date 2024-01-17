@@ -115,6 +115,11 @@ const mainCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
 
     graphqlResolver.createGraphqlResolver({
       lambdaDataSource: productLambdaDataSource,
+      baseResolverProps: { typeName: 'Query', fieldName: 'getUploadUrl' },
+    });
+
+    graphqlResolver.createGraphqlResolver({
+      lambdaDataSource: productLambdaDataSource,
       baseResolverProps: { typeName: 'Mutation', fieldName: 'scanInvoice' },
     });
 

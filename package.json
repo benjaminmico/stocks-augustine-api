@@ -40,6 +40,8 @@
     "typescript": "~5.2.2"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.490.0",
+    "@aws-sdk/s3-presigned-post": "^3.490.0",
     "aws-cdk-lib": "2.96.2",
     "aws-sdk": "^2.2.15",
     "constructs": "^10.0.0",

@@ -77,6 +77,7 @@ type Query {
     limit: Int
     nextToken: String
   ): [SalesAnalysis] @aws_api_key @aws_cognito_user_pools
+  getUploadURL: AWSJSON! @aws_api_key @aws_cognito_user_pools
 }
 
 type Mutation {
