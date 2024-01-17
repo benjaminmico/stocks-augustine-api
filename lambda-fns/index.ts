@@ -54,7 +54,7 @@ export const product = async (event: AppSyncEvent) => {
       return await deleteProduct(event.arguments?.productId);
     case 'scanInvoice':
       return await scanInvoice(event.arguments?.file);
-    case 'getUpload':
+    case 'getUploadUrl':
       return await getUploadUrl(event.identity.username);
     default:
       return null;
