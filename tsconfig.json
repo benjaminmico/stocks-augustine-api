@@ -30,6 +30,6 @@
       "utils/*": ["utils/*"]
     }
   },
-  "include": ["**/*.ts", "lambda-fns/index.ts", "lambda-fns/createCourse.js"],
+  "include": ["**/*.ts", "lambda-fns/index.ts"],
   "exclude": ["node_modules", "cdk.out", "./dist/**/*"]
 }

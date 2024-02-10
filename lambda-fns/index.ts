@@ -1,4 +1,3 @@
-import createCourse from './createCourse/createCourse';
 import createProduct from './product/createProduct/createProduct';
 import deleteProduct from './product/deleteProduct/deleteProduct';
 import getProducts from './product/getProducts/getProducts';
@@ -25,15 +24,6 @@ type AppSyncEvent = {
       [key: string]: string[];
     };
   };
-};
-
-export const course = async (event: AppSyncEvent) => {
-  switch (event.info.fieldName) {
-    case 'createCourse':
-      return await createCourse(event.arguments.course);
-    default:
-      return null;
-  }
 };
 
 export const product = async (event: AppSyncEvent) => {

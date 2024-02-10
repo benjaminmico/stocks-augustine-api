@@ -1,16 +1,11 @@
 schema {
   query: Query
   mutation: Mutation
-  subscription: Subscription
 }
 
+scalar AWSJSON
+
 type Query {
-  getCourses(
-    filter: FilterInput
-    sort: SortInput
-    limit: Int
-    nextToken: String
-  ): CourseConnection @aws_api_key @aws_cognito_user_pools
   getProducts(
     filter: FilterInput
     sort: SortInput
@@ -81,11 +76,6 @@ type Query {
 }
 
 type Mutation {
-  createCourse(course: CourseInput!): Course
-    @aws_cognito_user_pools(cognito_groups: ["Admin"])
-  updateCourse(course: UpdateCourseInput!): Course
-    @aws_cognito_user_pools(cognito_groups: ["Admin"])
-  deleteCourse(id: ID!): ID @aws_cognito_user_pools(cognito_groups: ["Admin"])
   createProduct(product: ProductInput!): Product
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   createRestaurant(restaurant: RestaurantInput!): Restaurant
@@ -107,62 +97,6 @@ type Mutation {
   scanInvoice(file: String!): File!
 }
 
-type Subscription {
-  onCreateCourse: Course @aws_subscribe(mutations: ["createCourse"])
-  onUpdateCourse: Course @aws_subscribe(mutations: ["updateCourse"])
-  onDeleteCourse: ID @aws_subscribe(mutations: ["deleteCourse"])
-}
-
-type CourseConnection @aws_cognito_user_pools {
-  items: [Course!]!
-  nextToken: String
-}
-
-type Course @aws_cognito_user_pools {
-  id: ID!
-  level: Level!
-  price: Price!
-  type: Type!
-  age: Int!
-  subjects: [String!]!
-  syllabus: [Syllabus!]!
-  time: String!
-  prerequisites: [String!]
-}
-
-enum Level @aws_cognito_user_pools {
-  Beginner
-  Intermediate
-  Advanced
-}
-
-enum Price @aws_cognito_user_pools {
-  Free
-  Paid
-}
-
-enum Type @aws_cognito_user_pools {
-  Career
-  Skill
-}
-
-type Syllabus @aws_cognito_user_pools {
-  title: String!
-  description: String!
-  module: Module!
-}
-
-type Module @aws_cognito_user_pools {
-  type: ModuleType!
-  content: String!
-}
-
-enum ModuleType @aws_cognito_user_pools {
-  Lesson
-  Quiz
-  Project
-}
-
 input FilterInput {
   attributeName: String!
   attributeValue: String!
@@ -176,29 +110,6 @@ input SortInput {
 enum SortDirection {
   ASC
   DESC
-}
-
-input CourseInput @aws_cognito_user_pools {
-  level: Level!
-  price: Price!
-  type: Type!
-  age: Int!
-  subjects: [String!]!
-  syllabus: [SyllabusInput!]!
-  time: String!
-  prerequisites: [String!]
-}
-
-input UpdateCourseInput @aws_cognito_user_pools {
-  id: ID!
-  level: Level
-  price: Price
-  type: Type
-  age: Int
-  subjects: [String!]
-  syllabus: [SyllabusInput!]
-  time: String
-  prerequisites: [String!]
 }
 
 input ProductInput {
@@ -237,17 +148,6 @@ input UpdateSupplierInput {
 input UpdateRestaurantInput {
   restaurantId: ID!
   name: String
-}
-
-input SyllabusInput {
-  title: String!
-  description: String!
-  module: ModuleInput!
-}
-
-input ModuleInput @aws_cognito_user_pools {
-  type: ModuleType!
-  content: String!
 }
 
 type Product @aws_api_key @aws_cognito_user_pools {

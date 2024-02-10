@@ -12,6 +12,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  AWSJSON: { input: any; output: any; }
 };
 
 export type Category = {
@@ -21,46 +22,15 @@ export type Category = {
   restaurantId: Scalars['ID']['output'];
 };
 
-export type Course = {
-  __typename?: 'Course';
-  age: Scalars['Int']['output'];
-  id: Scalars['ID']['output'];
-  level: Level;
-  prerequisites?: Maybe<Array<Scalars['String']['output']>>;
-  price: Price;
-  subjects: Array<Scalars['String']['output']>;
-  syllabus: Array<Syllabus>;
-  time: Scalars['String']['output'];
-  type: Type;
-};
-
-export type CourseConnection = {
-  __typename?: 'CourseConnection';
-  items: Array<Course>;
-  nextToken?: Maybe<Scalars['String']['output']>;
-};
-
-export type CourseInput = {
-  age: Scalars['Int']['input'];
-  level: Level;
-  prerequisites?: InputMaybe<Array<Scalars['String']['input']>>;
-  price: Price;
-  subjects: Array<Scalars['String']['input']>;
-  syllabus: Array<SyllabusInput>;
-  time: Scalars['String']['input'];
-  type: Type;
+export type File = {
+  __typename?: 'File';
+  url: Scalars['String']['output'];
 };
 
 export type FilterInput = {
   attributeName: Scalars['String']['input'];
   attributeValue: Scalars['String']['input'];
 };
-
-export enum Level {
-  Advanced = 'Advanced',
-  Beginner = 'Beginner',
-  Intermediate = 'Intermediate'
-}
 
 export type Menu = {
   __typename?: 'Menu';
@@ -85,42 +55,18 @@ export type MenuItem = {
   usedQuantity?: Maybe<Scalars['Float']['output']>;
 };
 
-export type Module = {
-  __typename?: 'Module';
-  content: Scalars['String']['output'];
-  type: ModuleType;
-};
-
-export type ModuleInput = {
-  content: Scalars['String']['input'];
-  type: ModuleType;
-};
-
-export enum ModuleType {
-  Lesson = 'Lesson',
-  Project = 'Project',
-  Quiz = 'Quiz'
-}
-
 export type Mutation = {
   __typename?: 'Mutation';
-  createCourse?: Maybe<Course>;
   createProduct?: Maybe<Product>;
   createRestaurant?: Maybe<Restaurant>;
   createSupplier?: Maybe<Supplier>;
-  deleteCourse?: Maybe<Scalars['ID']['output']>;
   deleteProduct?: Maybe<Scalars['ID']['output']>;
   deleteRestaurant?: Maybe<Scalars['ID']['output']>;
   deleteSupplier?: Maybe<Scalars['ID']['output']>;
-  updateCourse?: Maybe<Course>;
+  scanInvoice: File;
   updateProduct?: Maybe<Product>;
   updateRestaurant?: Maybe<Restaurant>;
   updateSupplier?: Maybe<Supplier>;
-};
-
-
-export type MutationCreateCourseArgs = {
-  course: CourseInput;
 };
 
 
@@ -139,11 +85,6 @@ export type MutationCreateSupplierArgs = {
 };
 
 
-export type MutationDeleteCourseArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
 export type MutationDeleteProductArgs = {
   productId: Scalars['ID']['input'];
 };
@@ -159,8 +100,8 @@ export type MutationDeleteSupplierArgs = {
 };
 
 
-export type MutationUpdateCourseArgs = {
-  course: UpdateCourseInput;
+export type MutationScanInvoiceArgs = {
+  file: Scalars['String']['input'];
 };
 
 
@@ -188,11 +129,6 @@ export type Order = {
   productId: Scalars['ID']['output'];
 };
 
-export enum Price {
-  Free = 'Free',
-  Paid = 'Paid'
-}
-
 export type Product = {
   __typename?: 'Product';
   name: Scalars['String']['output'];
@@ -219,7 +155,6 @@ export type ProductInput = {
 export type Query = {
   __typename?: 'Query';
   getCategories?: Maybe<Array<Maybe<Category>>>;
-  getCourses?: Maybe<CourseConnection>;
   getMenuItems?: Maybe<Array<Maybe<MenuItem>>>;
   getMenus?: Maybe<Array<Maybe<Menu>>>;
   getOrders?: Maybe<Array<Maybe<Order>>>;
@@ -230,18 +165,11 @@ export type Query = {
   getStocks?: Maybe<Array<Maybe<Stock>>>;
   getSubcategories?: Maybe<Array<Maybe<Subcategory>>>;
   getSuppliers?: Maybe<Array<Maybe<Supplier>>>;
+  getUploadUrl: Scalars['AWSJSON']['output'];
 };
 
 
 export type QueryGetCategoriesArgs = {
-  filter?: InputMaybe<FilterInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  nextToken?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<SortInput>;
-};
-
-
-export type QueryGetCoursesArgs = {
   filter?: InputMaybe<FilterInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   nextToken?: InputMaybe<Scalars['String']['input']>;
@@ -328,6 +256,11 @@ export type QueryGetSuppliersArgs = {
   sort?: InputMaybe<SortInput>;
 };
 
+
+export type QueryGetUploadUrlArgs = {
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Restaurant = {
   __typename?: 'Restaurant';
   name: Scalars['String']['output'];
@@ -395,13 +328,6 @@ export type Subcategory = {
   subcategoryId: Scalars['ID']['output'];
 };
 
-export type Subscription = {
-  __typename?: 'Subscription';
-  onCreateCourse?: Maybe<Course>;
-  onDeleteCourse?: Maybe<Scalars['ID']['output']>;
-  onUpdateCourse?: Maybe<Course>;
-};
-
 export type Supplier = {
   __typename?: 'Supplier';
   name: Scalars['String']['output'];
@@ -412,41 +338,11 @@ export type SupplierInput = {
   name: Scalars['String']['input'];
 };
 
-export type Syllabus = {
-  __typename?: 'Syllabus';
-  description: Scalars['String']['output'];
-  module: Module;
-  title: Scalars['String']['output'];
-};
-
-export type SyllabusInput = {
-  description: Scalars['String']['input'];
-  module: ModuleInput;
-  title: Scalars['String']['input'];
-};
-
-export enum Type {
-  Career = 'Career',
-  Skill = 'Skill'
-}
-
 export enum UnitOfMeasure {
   Kilogram = 'Kilogram',
   Liter = 'Liter',
   Unit = 'Unit'
 }
-
-export type UpdateCourseInput = {
-  age?: InputMaybe<Scalars['Int']['input']>;
-  id: Scalars['ID']['input'];
-  level?: InputMaybe<Level>;
-  prerequisites?: InputMaybe<Array<Scalars['String']['input']>>;
-  price?: InputMaybe<Price>;
-  subjects?: InputMaybe<Array<Scalars['String']['input']>>;
-  syllabus?: InputMaybe<Array<SyllabusInput>>;
-  time?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<Type>;
-};
 
 export type UpdateProductInput = {
   name?: InputMaybe<Scalars['String']['input']>;

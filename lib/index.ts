@@ -3,7 +3,6 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as api from './api';
-import createCourseCDK from './cdk-course';
 import createUserPool from './cognito/user-pool';
 import mainCDK from './cdk-main';
 
@@ -18,7 +17,6 @@ export class CodeStack extends Stack {
     const graphqlApi = api.createApi(this, cognitoUserPool.userPool);
 
     // Create tables, lambdas and GraphQL resolvers
-    createCourseCDK(this, graphqlApi);
     mainCDK(this, graphqlApi);
   }
 }

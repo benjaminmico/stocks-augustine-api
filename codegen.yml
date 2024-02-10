@@ -1,5 +1,6 @@
 overwrite: true
-schema: 'graphql/schema.graphql'
+schema:
+  - 'graphql/schema.graphql'
 generates:
   types/graphql-types.ts:
     plugins:
