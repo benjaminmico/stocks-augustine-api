@@ -1,6 +1,5 @@
 import { Stack } from 'aws-cdk-lib';
 import * as ddb from 'aws-cdk-lib/aws-dynamodb';
-import { productTable } from './product-table';
 
 jest.mock('aws-cdk-lib/aws-dynamodb');
 
@@ -20,8 +19,6 @@ describe('Product Table', () => {
   });
 
   it('should create a DynamoDB table with correct properties', () => {
-    const table = productTable(stack);
-
     expect(ddb.Table).toHaveBeenCalledWith(
       stack,
       'ProductTable',

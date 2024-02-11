@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 import createSupplier from '../createSupplier/createSupplier';
 import deleteSupplier from './deleteSupplier';
-import { SupplierInput, SaleFormat, UnitOfMeasure } from 'types/graphql-types';
+import { SupplierInput } from 'types/graphql-types';
 
 const dynamoDB = new AWS.DynamoDB({
   region: 'local',

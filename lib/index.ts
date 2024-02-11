@@ -1,6 +1,6 @@
 // lib/index.ts
 
-import { App, Stack, StackProps } from 'aws-cdk-lib';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as api from './api';
 import createUserPool from './cognito/user-pool';

@@ -1,12 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
 import getSuppliers from './getSuppliers';
-import {
-  Supplier,
-  FilterInput,
-  SortInput,
-  SaleFormat,
-  UnitOfMeasure,
-} from 'types/graphql-types';
+import { Supplier, FilterInput } from 'types/graphql-types';
 
 const mockSuppliers: Supplier[] = [
   {
@@ -20,15 +14,9 @@ const mockSuppliers: Supplier[] = [
 ];
 
 const scanSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'scan');
-const querySpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'query'); // If you use query in your implementation
 
 describe('getSuppliers', () => {
-  let logSpy: jest.SpyInstance;
-  let logErrorSpy: jest.SpyInstance;
-
   beforeEach(() => {
-    logSpy = jest.spyOn(console, 'log').mockImplementation();
-    logErrorSpy = jest.spyOn(console, 'error').mockImplementation();
     process.env.PRODUCT_TABLE = 'TestSupplierTable';
   });
 

@@ -10,11 +10,9 @@ const updateSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'update');
 
 describe('updateProduct', () => {
   let logSpy: jest.SpyInstance;
-  let logErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     logSpy = jest.spyOn(console, 'log').mockImplementation();
-    logErrorSpy = jest.spyOn(console, 'error').mockImplementation();
     process.env.PRODUCT_TABLE = 'TestProductTable';
   });
 

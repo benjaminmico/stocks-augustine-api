@@ -1,12 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
 import getRestaurants from './getRestaurants';
-import {
-  Restaurant,
-  FilterInput,
-  SortInput,
-  SaleFormat,
-  UnitOfMeasure,
-} from 'types/graphql-types';
+import { Restaurant, FilterInput } from 'types/graphql-types';
 
 const mockRestaurants: Restaurant[] = [
   {
@@ -20,15 +14,9 @@ const mockRestaurants: Restaurant[] = [
 ];
 
 const scanSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'scan');
-const querySpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'query'); // If you use query in your implementation
 
 describe('getRestaurants', () => {
-  let logSpy: jest.SpyInstance;
-  let logErrorSpy: jest.SpyInstance;
-
   beforeEach(() => {
-    logSpy = jest.spyOn(console, 'log').mockImplementation();
-    logErrorSpy = jest.spyOn(console, 'error').mockImplementation();
     process.env.RESTAURANT_TABLE = 'TestRestaurantTable';
   });
 

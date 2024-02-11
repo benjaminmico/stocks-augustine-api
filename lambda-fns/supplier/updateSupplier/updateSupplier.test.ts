@@ -1,20 +1,14 @@
 import { DynamoDB } from 'aws-sdk';
 import updateSupplier from './updateSupplier';
-import {
-  UpdateSupplierInput,
-  SaleFormat,
-  UnitOfMeasure,
-} from 'types/graphql-types';
+import { UpdateSupplierInput } from 'types/graphql-types';
 
 const updateSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'update');
 
 describe('updateSupplier', () => {
   let logSpy: jest.SpyInstance;
-  let logErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     logSpy = jest.spyOn(console, 'log').mockImplementation();
-    logErrorSpy = jest.spyOn(console, 'error').mockImplementation();
     process.env.SUPPLIER_TABLE = 'TestSupplierTable';
   });
 

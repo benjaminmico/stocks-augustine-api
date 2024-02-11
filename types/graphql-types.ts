@@ -32,41 +32,48 @@ export type FilterInput = {
   attributeValue: Scalars['String']['input'];
 };
 
-export type Menu = {
-  __typename?: 'Menu';
-  category?: Maybe<Category>;
-  categoryId: Scalars['ID']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  menuId: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  price?: Maybe<Scalars['Float']['output']>;
-  restaurantId: Scalars['ID']['output'];
-};
-
 export type MenuItem = {
   __typename?: 'MenuItem';
-  menu?: Maybe<Menu>;
-  menuId: Scalars['ID']['output'];
+  label: Scalars['String']['output'];
   menuItemId: Scalars['ID']['output'];
-  product?: Maybe<Product>;
-  productId: Scalars['ID']['output'];
+  recipe: Array<Maybe<RecipeItem>>;
   restaurantId: Scalars['ID']['output'];
-  unitOfMeasure?: Maybe<UnitOfMeasure>;
-  usedQuantity?: Maybe<Scalars['Float']['output']>;
+  type: MenuItemType;
 };
+
+export enum MenuItemType {
+  Appetizer = 'APPETIZER',
+  Dessert = 'DESSERT',
+  Main = 'MAIN'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addRecipeItems?: Maybe<MenuItem>;
+  createMenuItem?: Maybe<MenuItem>;
   createProduct?: Maybe<Product>;
   createRestaurant?: Maybe<Restaurant>;
   createSupplier?: Maybe<Supplier>;
+  deleteMenuItem?: Maybe<Scalars['ID']['output']>;
   deleteProduct?: Maybe<Scalars['ID']['output']>;
+  deleteRecipeItem?: Maybe<Scalars['ID']['output']>;
   deleteRestaurant?: Maybe<Scalars['ID']['output']>;
   deleteSupplier?: Maybe<Scalars['ID']['output']>;
   scanInvoice: File;
   updateProduct?: Maybe<Product>;
   updateRestaurant?: Maybe<Restaurant>;
   updateSupplier?: Maybe<Supplier>;
+};
+
+
+export type MutationAddRecipeItemsArgs = {
+  menuItemId: Scalars['ID']['input'];
+  recipeItem?: InputMaybe<RecipeItem>;
+};
+
+
+export type MutationCreateMenuItemArgs = {
+  menuItem: MenuItem;
 };
 
 
@@ -85,8 +92,18 @@ export type MutationCreateSupplierArgs = {
 };
 
 
+export type MutationDeleteMenuItemArgs = {
+  menuItemId: Scalars['ID']['input'];
+};
+
+
 export type MutationDeleteProductArgs = {
   productId: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteRecipeItemArgs = {
+  recipeItemId: Scalars['ID']['input'];
 };
 
 
@@ -155,8 +172,8 @@ export type ProductInput = {
 export type Query = {
   __typename?: 'Query';
   getCategories?: Maybe<Array<Maybe<Category>>>;
+  getMenuItem?: Maybe<MenuItem>;
   getMenuItems?: Maybe<Array<Maybe<MenuItem>>>;
-  getMenus?: Maybe<Array<Maybe<Menu>>>;
   getOrders?: Maybe<Array<Maybe<Order>>>;
   getProducts?: Maybe<Array<Maybe<Product>>>;
   getRestaurants?: Maybe<Array<Maybe<Restaurant>>>;
@@ -177,15 +194,12 @@ export type QueryGetCategoriesArgs = {
 };
 
 
-export type QueryGetMenuItemsArgs = {
-  filter?: InputMaybe<FilterInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  nextToken?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<SortInput>;
+export type QueryGetMenuItemArgs = {
+  menuItemId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
-export type QueryGetMenusArgs = {
+export type QueryGetMenuItemsArgs = {
   filter?: InputMaybe<FilterInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   nextToken?: InputMaybe<Scalars['String']['input']>;
@@ -261,6 +275,19 @@ export type QueryGetUploadUrlArgs = {
   userId?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type RecipeItem = {
+  __typename?: 'RecipeItem';
+  category?: Maybe<Category>;
+  label: Scalars['String']['output'];
+  menuItemId: Scalars['ID']['output'];
+  product?: Maybe<Product>;
+  recipeItemId: Scalars['ID']['output'];
+  restaurantId: Scalars['ID']['output'];
+  subcategory?: Maybe<Subcategory>;
+  unitOfMeasure?: Maybe<UnitOfMeasure>;
+  usedQuantity?: Maybe<Scalars['Float']['output']>;
+};
+
 export type Restaurant = {
   __typename?: 'Restaurant';
   name: Scalars['String']['output'];
@@ -273,7 +300,6 @@ export type RestaurantInput = {
 
 export type Sale = {
   __typename?: 'Sale';
-  menu?: Maybe<Menu>;
   menuId: Scalars['ID']['output'];
   quantitySold?: Maybe<Scalars['Int']['output']>;
   restaurantId: Scalars['ID']['output'];

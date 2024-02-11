@@ -2,7 +2,6 @@ import { S3 } from 'aws-sdk';
 import { processUpload } from 'utils/files';
 import { log, logError } from 'utils/logger';
 import scanInvoice from './scanInvoice'; // Adjust the import path as necessary
-import { v4 as uuid } from 'uuid';
 
 jest.mock('utils/files', () => ({
   processUpload: jest.fn(),

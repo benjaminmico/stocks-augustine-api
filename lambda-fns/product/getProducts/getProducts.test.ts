@@ -3,7 +3,6 @@ import getProducts from './getProducts';
 import {
   Product,
   FilterInput,
-  SortInput,
   SaleFormat,
   UnitOfMeasure,
 } from 'types/graphql-types';
@@ -32,15 +31,9 @@ const mockProducts: Product[] = [
 ];
 
 const scanSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'scan');
-const querySpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'query'); // If you use query in your implementation
 
 describe('getProducts', () => {
-  let logSpy: jest.SpyInstance;
-  let logErrorSpy: jest.SpyInstance;
-
   beforeEach(() => {
-    logSpy = jest.spyOn(console, 'log').mockImplementation();
-    logErrorSpy = jest.spyOn(console, 'error').mockImplementation();
     process.env.PRODUCT_TABLE = 'TestProductTable';
   });
 

@@ -1,20 +1,14 @@
 import { DynamoDB } from 'aws-sdk';
 import updateRestaurant from './updateRestaurant';
-import {
-  UpdateRestaurantInput,
-  SaleFormat,
-  UnitOfMeasure,
-} from 'types/graphql-types';
+import { UpdateRestaurantInput } from 'types/graphql-types';
 
 const updateSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'update');
 
 describe('updateRestaurant', () => {
   let logSpy: jest.SpyInstance;
-  let logErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     logSpy = jest.spyOn(console, 'log').mockImplementation();
-    logErrorSpy = jest.spyOn(console, 'error').mockImplementation();
     process.env.RESTAURANT_TABLE = 'TestRestaurantTable';
   });
 

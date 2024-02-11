@@ -1,6 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
 import { getDynamoConfig } from 'config/dynamoConfig';
-import { Product, ProductInput } from 'types/graphql-types';
+import { ProductInput } from 'types/graphql-types';
 import { doesDynamoDBEntryExist } from 'utils/dynamodb';
 import { log, logError } from 'utils/logger';
 import { v4 as uuid } from 'uuid';

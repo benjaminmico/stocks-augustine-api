@@ -1,11 +1,7 @@
 const AWS = require('aws-sdk');
 import createRestaurant from '../createRestaurant/createRestaurant';
 import deleteRestaurant from './deleteRestaurant';
-import {
-  RestaurantInput,
-  SaleFormat,
-  UnitOfMeasure,
-} from 'types/graphql-types';
+import { RestaurantInput } from 'types/graphql-types';
 
 const dynamoDB = new AWS.DynamoDB({
   region: 'local',

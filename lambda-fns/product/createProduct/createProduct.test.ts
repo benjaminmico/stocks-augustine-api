@@ -1,12 +1,7 @@
 import { DynamoDB } from 'aws-sdk';
 import createProduct from './createProduct';
 
-import {
-  Product,
-  ProductInput,
-  SaleFormat,
-  UnitOfMeasure,
-} from 'types/graphql-types';
+import { ProductInput, SaleFormat, UnitOfMeasure } from 'types/graphql-types';
 import { doesDynamoDBEntryExist } from 'utils/dynamodb';
 
 jest.mock('utils/dynamodb', () => ({
@@ -17,11 +12,9 @@ const putSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'put');
 
 describe('createProduct', () => {
   let logSpy: jest.SpyInstance;
-  let logErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     logSpy = jest.spyOn(console, 'log').mockImplementation();
-    logErrorSpy = jest.spyOn(console, 'error').mockImplementation();
     process.env.PRODUCT_TABLE = 'TestProductTable';
   });
 

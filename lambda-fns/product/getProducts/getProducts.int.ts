@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
+import { SaleFormat, UnitOfMeasure } from 'types/graphql-types';
 import getProducts from './getProducts';
-import { ProductInput, SaleFormat, UnitOfMeasure } from 'types/graphql-types';
 
 const dynamoDB = new AWS.DynamoDB({
   region: 'local',

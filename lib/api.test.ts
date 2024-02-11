@@ -40,7 +40,5 @@ describe('AppSync API Tests', () => {
         Type: 'AWS::AppSync::GraphQLApi',
       },
     });
-
-    const graphQlApi = resources[0];
   });
 });

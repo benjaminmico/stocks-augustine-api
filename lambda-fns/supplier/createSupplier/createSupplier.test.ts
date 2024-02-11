@@ -1,23 +1,14 @@
 import { DynamoDB } from 'aws-sdk';
 import createSupplier from './createSupplier';
-import { logError } from 'utils/logger';
-import { log } from 'console';
-import {
-  Supplier,
-  SupplierInput,
-  SaleFormat,
-  UnitOfMeasure,
-} from 'types/graphql-types';
+import { Supplier, SupplierInput } from 'types/graphql-types';
 
 const putSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'put');
 
 describe('createSupplier', () => {
   let logSpy: jest.SpyInstance;
-  let logErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     logSpy = jest.spyOn(console, 'log').mockImplementation();
-    logErrorSpy = jest.spyOn(console, 'error').mockImplementation();
     process.env.SUPPLIER_TABLE = 'TestSupplierTable';
   });
 
