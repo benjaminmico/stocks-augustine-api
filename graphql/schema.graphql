@@ -48,18 +48,13 @@ type Query {
     limit: Int
     nextToken: String
   ): [Subcategory] @aws_api_key @aws_cognito_user_pools
-  getMenus(
-    filter: FilterInput
-    sort: SortInput
-    limit: Int
-    nextToken: String
-  ): [Menu] @aws_api_key @aws_cognito_user_pools
   getMenuItems(
     filter: FilterInput
     sort: SortInput
     limit: Int
     nextToken: String
   ): [MenuItem] @aws_api_key @aws_cognito_user_pools
+  getMenuItem(menuItemId: ID): MenuItem @aws_api_key @aws_cognito_user_pools
   getSales(
     filter: FilterInput
     sort: SortInput
@@ -80,6 +75,8 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   createRestaurant(restaurant: RestaurantInput!): Restaurant
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  createMenuItem(menuItem: MenuItemInput!): MenuItem
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
   createSupplier(supplier: SupplierInput!): Supplier
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   updateProduct(product: UpdateProductInput!): Product
@@ -93,6 +90,12 @@ type Mutation {
   deleteRestaurant(restaurantId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   deleteSupplier(supplierId: ID!): ID
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  deleteMenuItem(menuItemId: ID!): ID
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  addRecipeItem(menuItemId: ID!, recipeItem: RecipeItemInput): MenuItem
+    @aws_cognito_user_pools(cognito_groups: ["Admin"])
+  deleteRecipeItem(recipeItemId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   scanInvoice(file: String!): File!
 }
@@ -124,6 +127,21 @@ input ProductInput {
 
 input RestaurantInput {
   name: String!
+}
+
+input MenuItemInput {
+  name: String!
+  name: String!
+  type: MenuItemType!
+}
+
+input RecipeItemInput {
+  name: String!
+  usedQuantity: Float
+  unitOfMeasure: UnitOfMeasure
+  product: Product
+  category: Category
+  subcategory: Subcategory
 }
 
 input SupplierInput {
@@ -205,25 +223,30 @@ type Subcategory @aws_api_key @aws_cognito_user_pools {
   category: Category
 }
 
-type Menu @aws_api_key @aws_cognito_user_pools {
-  menuId: ID!
-  categoryId: ID!
-  restaurantId: ID!
-  name: String!
-  description: String
-  price: Float
-  category: Category
+enum MenuItemType @aws_api_key @aws_cognito_user_pools {
+  APPETIZER
+  MAIN
+  DESSERT
 }
 
 type MenuItem @aws_api_key @aws_cognito_user_pools {
   menuItemId: ID!
-  productId: ID!
   restaurantId: ID!
-  menuId: ID!
+  name: String!
+  recipe: [RecipeItem]!
+  type: MenuItemType!
+}
+
+type RecipeItem @aws_api_key @aws_cognito_user_pools {
+  recipeItemId: ID!
+  menuItemId: ID!
+  restaurantId: ID!
+  name: String!
   usedQuantity: Float
   unitOfMeasure: UnitOfMeasure
   product: Product
-  menu: Menu
+  category: Category
+  subcategory: Subcategory
 }
 
 type Sale @aws_api_key @aws_cognito_user_pools {
@@ -232,7 +255,6 @@ type Sale @aws_api_key @aws_cognito_user_pools {
   restaurantId: ID!
   quantitySold: Int
   saleDate: String
-  menu: Menu
 }
 
 type SalesAnalysis @aws_api_key @aws_cognito_user_pools {
