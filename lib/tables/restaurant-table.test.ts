@@ -1,5 +1,6 @@
 import { Stack } from 'aws-cdk-lib';
 import * as ddb from 'aws-cdk-lib/aws-dynamodb';
+import { restaurantTable } from './restaurant-table';
 
 jest.mock('aws-cdk-lib/aws-dynamodb');
 
@@ -19,6 +20,8 @@ describe('Restaurant Table', () => {
   });
 
   it('should create a DynamoDB table with correct properties', () => {
+    restaurantTable(stack);
+
     expect(ddb.Table).toHaveBeenCalledWith(
       stack,
       'RestaurantTable',

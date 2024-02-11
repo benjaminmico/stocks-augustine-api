@@ -1,4 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
+import deleteProduct from './deleteProduct';
 
 const deleteSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'delete');
 
@@ -20,6 +21,8 @@ describe('deleteProduct', () => {
     deleteSpy.mockReturnValue({
       promise: jest.fn().mockResolvedValue({}),
     } as any);
+
+    await deleteProduct(productId);
 
     expect(deleteSpy).toHaveBeenCalled();
     expect(logSpy).toHaveBeenCalledWith(

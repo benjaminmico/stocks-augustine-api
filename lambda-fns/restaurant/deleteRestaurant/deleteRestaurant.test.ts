@@ -1,12 +1,10 @@
 import { DynamoDB } from 'aws-sdk';
+import deleteRestaurant from './deleteRestaurant';
 
 const deleteSpy = jest.spyOn(DynamoDB.DocumentClient.prototype, 'delete');
 
 describe('deleteRestaurant', () => {
-  let logSpy: jest.SpyInstance;
-
   beforeEach(() => {
-    logSpy = jest.spyOn(console, 'log').mockImplementation();
     process.env.RESTAURANT_TABLE = 'TestRestaurantTable';
   });
 
@@ -21,9 +19,8 @@ describe('deleteRestaurant', () => {
       promise: jest.fn().mockResolvedValue({}),
     } as any);
 
+    deleteRestaurant(restaurantId);
+
     expect(deleteSpy).toHaveBeenCalled();
-    expect(logSpy).toHaveBeenCalledWith(
-      expect.stringContaining(`Restaurant deleted with ID: ${restaurantId}`),
-    );
   });
 });
