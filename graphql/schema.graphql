@@ -3,8 +3,6 @@ schema {
   mutation: Mutation
 }
 
-scalar AWSJSON
-
 type Query {
   getProducts(
     filter: FilterInput
@@ -279,9 +277,9 @@ enum SaleFormat {
 }
 
 enum MenuItemType {
-  APPETIZER
-  MAIN
-  DESSERT
+  Appetizer
+  Main
+  Dessert
 }
 
 type File {
