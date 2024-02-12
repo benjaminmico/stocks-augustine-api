@@ -34,10 +34,15 @@ export type FilterInput = {
 
 export type MenuItem = {
   __typename?: 'MenuItem';
-  label: Scalars['String']['output'];
   menuItemId: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
   recipe: Array<Maybe<RecipeItem>>;
   restaurantId: Scalars['ID']['output'];
+  type: MenuItemType;
+};
+
+export type MenuItemInput = {
+  name: Scalars['String']['input'];
   type: MenuItemType;
 };
 
@@ -49,7 +54,7 @@ export enum MenuItemType {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addRecipeItems?: Maybe<MenuItem>;
+  addRecipeItem?: Maybe<MenuItem>;
   createMenuItem?: Maybe<MenuItem>;
   createProduct?: Maybe<Product>;
   createRestaurant?: Maybe<Restaurant>;
@@ -66,14 +71,14 @@ export type Mutation = {
 };
 
 
-export type MutationAddRecipeItemsArgs = {
+export type MutationAddRecipeItemArgs = {
   menuItemId: Scalars['ID']['input'];
-  recipeItem?: InputMaybe<RecipeItem>;
+  recipeItem?: InputMaybe<RecipeItemInput>;
 };
 
 
 export type MutationCreateMenuItemArgs = {
-  menuItem: MenuItem;
+  menuItem: MenuItemInput;
 };
 
 
@@ -278,14 +283,23 @@ export type QueryGetUploadUrlArgs = {
 export type RecipeItem = {
   __typename?: 'RecipeItem';
   category?: Maybe<Category>;
-  label: Scalars['String']['output'];
   menuItemId: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
   product?: Maybe<Product>;
   recipeItemId: Scalars['ID']['output'];
   restaurantId: Scalars['ID']['output'];
   subcategory?: Maybe<Subcategory>;
   unitOfMeasure?: Maybe<UnitOfMeasure>;
   usedQuantity?: Maybe<Scalars['Float']['output']>;
+};
+
+export type RecipeItemInput = {
+  category?: InputMaybe<Category>;
+  name: Scalars['String']['input'];
+  product?: InputMaybe<Product>;
+  subcategory?: InputMaybe<Subcategory>;
+  unitOfMeasure?: InputMaybe<UnitOfMeasure>;
+  usedQuantity?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type Restaurant = {

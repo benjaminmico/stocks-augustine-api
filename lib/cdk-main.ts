@@ -11,12 +11,16 @@ import path = require('path');
 import { getDataSourceName } from 'utils/getDataSourceName';
 import { restaurantTable } from './tables/restaurant-table';
 import { supplierTable } from './tables/supplier-table';
+import { menuItemTable } from './tables/menu-item-table';
+import { userRestaurantAccessTable } from './tables/user-restaurant-access-table';
 
 const mainCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
   // DynamoDB
   const productDdbTable = productTable(scope);
   const restaurantDdbTable = restaurantTable(scope);
   const supplierDdbTable = supplierTable(scope);
+  const menuItemDdbTable = menuItemTable(scope);
+  const userRestaurantAccessDdbTable = userRestaurantAccessTable(scope);
 
   // S3
   const invoiceBucket = new s3.Bucket(scope, 'InvoiceBucket', {
@@ -26,6 +30,23 @@ const mainCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
   });
 
   // Lambdas
+  const userLambda = new lambdaNodeJs.NodejsFunction(
+    scope,
+    'AppSyncUserHandler',
+    {
+      functionName: `code-dev-AppSyncUserHandler`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.product',
+      entry: path.join(__dirname, `../lambda-fns/index.ts`),
+      timeout: Duration.seconds(30),
+      memorySize: 1024,
+      environment: {
+        RESTAURANT_TABLE: restaurantDdbTable.tableName,
+        USER_RESTAURANT_ACCESS_TABLE: userRestaurantAccessDdbTable.tableName,
+      },
+    },
+  );
+
   const productLambda = new lambdaNodeJs.NodejsFunction(
     scope,
     'AppSyncProductHandler',
@@ -77,13 +98,37 @@ const mainCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
     },
   );
 
+  const menuLambda = new lambdaNodeJs.NodejsFunction(
+    scope,
+    'AppSyncSupplierHandler',
+    {
+      functionName: `code-dev-AppSyncSupplierHandler`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.supplier',
+      entry: path.join(__dirname, `../lambda-fns/index.ts`),
+      timeout: Duration.seconds(30),
+      memorySize: 1024,
+      environment: {
+        SUPPLIER_TABLE: menuItemDdbTable.tableName,
+        RESTAURANT_TABLE: restaurantDdbTable.tableName,
+      },
+    },
+  );
+
   restaurantDdbTable.grantReadWriteData(restaurantLambda);
   restaurantDdbTable.grantReadWriteData(productLambda);
+  restaurantDdbTable.grantReadWriteData(userLambda);
 
   productDdbTable.grantReadWriteData(productLambda);
 
   supplierDdbTable.grantReadWriteData(supplierLambda);
   supplierDdbTable.grantReadWriteData(productLambda);
+
+  menuItemDdbTable.grantReadWriteData(menuLambda);
+  menuItemDdbTable.grantReadWriteData(restaurantLambda);
+
+  userRestaurantAccessDdbTable.grantReadWriteData(restaurantLambda);
+  userRestaurantAccessDdbTable.grantReadWriteData(userLambda);
 
   // Data source
   if (api) {
