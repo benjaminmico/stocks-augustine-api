@@ -131,7 +131,6 @@ input RestaurantInput {
 
 input MenuItemInput {
   name: String!
-  name: String!
   type: MenuItemType!
 }
 
