@@ -220,12 +220,6 @@ type Subcategory @aws_api_key @aws_cognito_user_pools {
   category: Category
 }
 
-enum MenuItemType @aws_api_key @aws_cognito_user_pools {
-  APPETIZER
-  MAIN
-  DESSERT
-}
-
 type MenuItem @aws_api_key @aws_cognito_user_pools {
   menuItemId: ID!
   restaurantId: ID!
