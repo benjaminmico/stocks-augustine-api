@@ -52,7 +52,6 @@ type Query {
     limit: Int
     nextToken: String
   ): [MenuItem] @aws_api_key @aws_cognito_user_pools
-  getMenuItem(menuItemId: ID): MenuItem @aws_api_key @aws_cognito_user_pools
   getSales(
     filter: FilterInput
     sort: SortInput
@@ -73,8 +72,6 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   createRestaurant(restaurant: RestaurantInput!): Restaurant
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
-  createMenuItem(menuItem: MenuItemInput!): MenuItem
-    @aws_cognito_user_pools(cognito_groups: ["Admin"])
   createSupplier(supplier: SupplierInput!): Supplier
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   updateProduct(product: UpdateProductInput!): Product
@@ -88,12 +85,6 @@ type Mutation {
   deleteRestaurant(restaurantId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   deleteSupplier(supplierId: ID!): ID
-    @aws_cognito_user_pools(cognito_groups: ["Admin"])
-  deleteMenuItem(menuItemId: ID!): ID
-    @aws_cognito_user_pools(cognito_groups: ["Admin"])
-  addRecipeItem(menuItemId: ID!, recipeItem: RecipeItemInput): ID
-    @aws_cognito_user_pools(cognito_groups: ["Admin"])
-  deleteRecipeItem(recipeItemId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   scanInvoice(file: String!): File!
 }
