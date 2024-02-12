@@ -93,7 +93,7 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   deleteMenuItem(menuItemId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
-  addRecipeItem(menuItemId: ID!, recipeItem: RecipeItemInput): MenuItem
+  addRecipeItem(menuItemId: ID!, recipeItem: RecipeItemInput): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
   deleteRecipeItem(recipeItemId: ID!): ID
     @aws_cognito_user_pools(cognito_groups: ["Admin"])
@@ -276,6 +276,12 @@ enum UnitOfMeasure {
 enum SaleFormat {
   Individual
   Package
+}
+
+enum MenuItemType {
+  APPETIZER
+  MAIN
+  DESSERT
 }
 
 type File {
