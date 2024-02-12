@@ -100,11 +100,11 @@ const mainCDK = (scope: Stack, api?: appsync.GraphqlApi) => {
 
   const menuLambda = new lambdaNodeJs.NodejsFunction(
     scope,
-    'AppSyncSupplierHandler',
+    'AppSyncMenuHandler',
     {
-      functionName: `code-dev-AppSyncSupplierHandler`,
+      functionName: `code-dev-AppSyncMenuHandler`,
       runtime: lambda.Runtime.NODEJS_18_X,
-      handler: 'index.supplier',
+      handler: 'index.menu',
       entry: path.join(__dirname, `../lambda-fns/index.ts`),
       timeout: Duration.seconds(30),
       memorySize: 1024,
